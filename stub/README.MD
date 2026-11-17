@@ -1,0 +1,1 @@
+сид и поведение reference stub

@@ -8,6 +8,12 @@ GET 	/v1/orders/{order_id} 	getOrder 	Read-only снимок заказа
 POST 	/v1/orders/{order_id}/notify 	notifyOrder 	Принять факт системной доставки
 GET 	/v1/points 	listPoints 	Баллы команды (массив)
 
+структура:
+api/
+├── openapi.yaml   # контракт
+├── examples/      # 4 тела: request, quote, order-notify, error
+├── mocks/         # 6 согласованных наборов
+└── viewer.py      # Swagger UI и Redoc
 
 ERRORS:
 
@@ -37,10 +43,16 @@ def requests_get():
 
 @app.post("/v1/requests")
 def requests_post():
+    """
+    Заявка для API (создание)
+    """
     return
 
 @app.get("/requests/{request_id}/quotes")
 def requests_by_id_get():
+    """
+    
+    """
     return
 
 @app.post("/requests/{request_id}/quotes")
