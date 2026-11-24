@@ -18,6 +18,7 @@ from __future__ import annotations
 import hmac
 import os
 import re
+from contextlib import asynccontextmanager
 from datetime import datetime, timedelta, timezone
 from typing import Annotated, Any, Literal
 
@@ -26,6 +27,8 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Discriminator, Field, Tag, field_validator
 from starlette.exceptions import HTTPException as StarletteHTTPException
+
+from .cache import Cache
 
 SERVICE_NAME = 'team-service'
 SERVICE_VERSION = '2.4.0'
@@ -390,14 +393,25 @@ def create_app(api_key: str | None = None) -> FastAPI:
     """
     key = api_key or os.environ.get('TEAM_API_KEY') or DEFAULT_API_KEY
     store = seed_store()
+    cache = Cache()
+
+    @asynccontextmanager
+    async def lifespan(app: FastAPI):
+        await cache.connect()
+        try:
+            yield
+        finally:
+            await cache.close()
 
     app = FastAPI(
         title='Team Service API (reference stub)',
         version=SERVICE_VERSION,
         description='Учебный stub контракта api/openapi.yaml.',
+        lifespan=lifespan,
     )
     app.state.api_key = key
     app.state.store = store
+    app.state.cache = cache
 
     @app.middleware('http')
     async def api_key_guard(request: Request, call_next):
@@ -457,8 +471,14 @@ def create_app(api_key: str | None = None) -> FastAPI:
     @app.get('/v1/requests')
     async def list_requests() -> list[dict[str, Any]]:
         state = app.state.store
-        return [dict(state['requests'][request_id])
-                for request_id in state['request_order']]
+        cache_key = 'requests:list'
+        cached = await cache.get_json(cache_key)
+        if isinstance(cached, list):
+            return cached
+        items = [dict(state['requests'][request_id])
+                 for request_id in state['request_order']]
+        await cache.set_json(cache_key, items)
+        return items
 
     @app.post('/v1/requests', status_code=201)
     async def create_request(body: RequestIn, request: Request,
@@ -501,6 +521,7 @@ def create_app(api_key: str | None = None) -> FastAPI:
             'fingerprint': fingerprint,
             'request_id': body.request_id,
         }
+        await cache.delete('requests:list')
         response.status_code = 201
         return dict(stored)
 
@@ -512,7 +533,13 @@ def create_app(api_key: str | None = None) -> FastAPI:
         if request_id not in state['requests']:
             return error_response(404, 'not_found', 'Заявка не найдена.',
                                   {'resource': 'request', 'id': request_id})
-        return [dict(quote) for quote in state['quotes'].get(request_id, [])]
+        cache_key = f'quotes:{request_id}'
+        cached = await cache.get_json(cache_key)
+        if isinstance(cached, list):
+            return cached
+        items = [dict(quote) for quote in state['quotes'].get(request_id, [])]
+        await cache.set_json(cache_key, items)
+        return items
 
     @app.post('/v1/requests/{request_id}/quotes', status_code=201)
     async def create_quote(request_id: str, body: QuoteBatchIn,
@@ -570,6 +597,7 @@ def create_app(api_key: str | None = None) -> FastAPI:
             stored.append(quote)
         state['quotes'][request_id] = stored
         record['status'] = 'quoted'
+        await cache.delete(f'quotes:{request_id}', 'requests:list')
         response.status_code = 201
         return {'request_id': request_id,
                 'variants': [dict(quote) for quote in stored]}
@@ -583,7 +611,13 @@ def create_app(api_key: str | None = None) -> FastAPI:
         if order is None:
             return error_response(404, 'not_found', 'Заказ не найден.',
                                   {'resource': 'order', 'id': order_id})
-        return dict(order)
+        cache_key = f'orders:{order_id}'
+        cached = await cache.get_json(cache_key)
+        if isinstance(cached, dict):
+            return cached
+        payload = dict(order)
+        await cache.set_json(cache_key, payload)
+        return payload
 
     @app.post('/v1/orders/{order_id}/notify', status_code=204)
     async def notify_order(order_id: str, request: Request, body: NotifyBody):
@@ -640,7 +674,13 @@ def create_app(api_key: str | None = None) -> FastAPI:
     @app.get('/v1/points')
     async def list_points() -> list[dict[str, Any]]:
         state = app.state.store
-        return [dict(entry) for entry in state['points']]
+        cache_key = 'points:list'
+        cached = await cache.get_json(cache_key)
+        if isinstance(cached, list):
+            return cached
+        items = [dict(entry) for entry in state['points']]
+        await cache.set_json(cache_key, items)
+        return items
 
     return app
 
