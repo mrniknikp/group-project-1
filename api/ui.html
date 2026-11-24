@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Соборный коммит — панель API</title>
+<style>
+  :root {
+    --bg: #f5f7fb; --card: #fff; --ink: #16223a; --muted: #64748b;
+    --line: #e2e8f0; --accent: #2563eb; --ok: #15803d; --bad: #b91c1c;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  header { background: #16223a; color: #fff; padding: 18px 24px; }
+  header h1 { margin: 0; font-size: 19px; }
+  header p { margin: 4px 0 0; color: #b8c6e2; font-size: 13px; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 20px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+          padding: 18px 20px; margin-bottom: 18px; box-shadow: 0 1px 3px #0f172a0d; }
+  h2 { font-size: 16px; margin: 0 0 14px; }
+  h3 { font-size: 14px; margin: 20px 0 8px; color: var(--muted); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+  label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+  input, select, textarea { width: 100%; padding: 8px 10px; border: 1px solid var(--line);
+    border-radius: 8px; background: #fff; color: var(--ink); font: inherit; }
+  textarea { resize: vertical; min-height: 110px;
+             font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 12px; }
+  input:focus, select:focus, textarea:focus { outline: 2px solid #2563eb33; border-color: var(--accent); }
+  .settings { display: grid; grid-template-columns: 2fr 1fr 0.6fr auto; gap: 12px; align-items: end; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 12px; }
+  button { padding: 9px 14px; border: 0; border-radius: 8px; background: var(--accent);
+           color: #fff; font: inherit; font-weight: 600; cursor: pointer; }
+  button.secondary { background: #e8eefc; color: #1d4ed8; }
+  button.ghost { background: #f1f5f9; color: var(--ink); font-weight: 500; padding: 6px 10px; }
+  button:disabled { opacity: .5; cursor: not-allowed; }
+  .modes { display: flex; gap: 14px; padding: 8px 0; flex-wrap: wrap; }
+  .modes label { display: inline-flex; gap: 5px; align-items: center; color: var(--ink); font-size: 13px; }
+  .modes input { width: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; font-size: 12px; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 12px;
+           font-weight: 600; white-space: nowrap; }
+  .badge.ok { background: #dcfce7; color: var(--ok); }
+  .badge.bad { background: #fee2e2; color: var(--bad); }
+  pre { background: #0f172a; color: #d8e6ff; padding: 14px; border-radius: 8px; overflow: auto;
+        max-height: 360px; font-size: 12px; line-height: 1.45; margin: 8px 0 0; }
+  .note { background: #eff6ff; border-left: 3px solid var(--accent); padding: 10px 12px;
+          border-radius: 6px; color: #1e3a8a; font-size: 13px; margin-bottom: 14px; }
+  .err { background: #fef2f2; color: var(--bad); padding: 10px 12px; border-radius: 6px; margin-top: 10px; }
+  .hidden { display: none; }
+  code { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; font-size: 12px; }
+  .small { color: var(--muted); font-size: 12px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Соборный коммит · панель API</h1>
+  <p>Заявка → поиск маршрутов → котировки. Ответы берутся прямо из API, а не из заглушек.</p>
+</header>
+
+<div class="wrap">
+  <section class="card">
+    <h2>Подключение</h2>
+    <div class="settings">
+      <div><label for="baseUrl">Адрес API</label><input id="baseUrl" value="http://31.172.73.114:8080"></div>
+      <div><label for="apiKey">X-Api-Key</label><input id="apiKey" value="test-key"></div>
+      <div><label for="timeout">Таймаут, с</label><input id="timeout" type="number" min="1" max="120" value="25"></div>
+      <div><a href="#" id="docsLink" class="small">OpenAPI-контракт →</a></div>
+    </div>
+    <p class="small" style="margin-bottom:0">Лимит времени ответа — 25 секунд. Панель показывает реальное время каждого вызова.</p>
+  </section>
+
+  <section class="card">
+    <h2>1. Полный цикл: заявка → маршруты → котировки</h2>
+    <div class="note">Заполните поля и нажмите «Создать заявку и найти маршруты». Панель сама вызовет API, покажет найденные пути с ценой и сроком, после чего можно опубликовать 1–3 выбранных варианта и увидеть ответ клиенту.</div>
+
+    <div class="grid">
+      <div><label for="requestId">request_id</label>
+        <div class="row" style="margin:0"><input id="requestId" style="flex:1"><button class="ghost" id="newId" type="button">новый</button></div></div>
+      <div><label for="origin">origin</label><input id="origin" value="moscow"></div>
+      <div><label for="destination">destination</label><input id="destination" value="kazan"></div>
+      <div><label for="weight">weight_t</label><input id="weight" type="number" step="0.1" min="0.001" value="10"></div>
+      <div><label for="deadline">response_deadline (RFC 3339 UTC)</label><input id="deadline"></div>
+      <div><label for="points">points_reward</label><input id="points" type="number" min="1" value="90"></div>
+      <div><label for="cargo">cargo.description</label><input id="cargo" value="Оборудование на паллетах"></div>
+      <div><label for="cargoType">cargo.cargo_type</label>
+        <select id="cargoType"><option>general</option><option>fragile</option><option>refrigerated</option><option>hazardous</option><option>oversized</option></select></div>
+      <div><label for="comment">comment</label><input id="comment" value="Нужны варианты по цене и сроку"></div>
+    </div>
+    <div class="modes" id="modes">
+      <label><input type="checkbox" name="mode" value="road" checked> road</label>
+      <label><input type="checkbox" name="mode" value="rail" checked> rail</label>
+      <label><input type="checkbox" name="mode" value="air"> air</label>
+      <label><input type="checkbox" name="mode" value="sea"> sea</label>
+    </div>
+    <div class="row">
+      <button id="runFlow" type="button">Создать заявку и найти маршруты</button>
+      <span id="flowStatus" class="small"></span>
+    </div>
+    <div id="flowLog"></div>
+
+    <h3>Найденные маршруты — выберите 1–3 для публикации</h3>
+    <table id="routesTable"><thead><tr>
+      <th></th><th>Режим</th><th>Маршрут (leg_ids)</th><th class="num">Время, ч</th>
+      <th class="num">₽/т</th><th class="num">Цена за груз, ₽</th>
+    </tr></thead><tbody><tr><td colspan="6" class="small">Маршруты появятся после поиска.</td></tr></tbody></table>
+    <div class="row">
+      <button id="publish" type="button" disabled>Опубликовать выбранные варианты</button>
+      <span class="small">Цена и срок берутся из ответа поиска; метки cheapest/fastest/balanced назначаются по минимальной цене и времени.</span>
+    </div>
+
+    <h3>Ответ клиенту: цена и время перевозки</h3>
+    <table id="quotesTable"><thead><tr>
+      <th>Вариант</th><th class="num">Цена, ₽</th><th class="num">Срок, ч</th><th>Маршрут</th><th>Статус</th><th>quote_id</th>
+    </tr></thead><tbody><tr><td colspan="6" class="small">Котировки появятся после публикации.</td></tr></tbody></table>
+    <pre id="flowResponse" class="hidden"></pre>
+  </section>
+
+  <section class="card">
+    <h2>2. Ручной вызов любой операции</h2>
+    <div class="row" id="quick">
+      <button class="ghost" data-preset="health">GET /healthz</button>
+      <button class="ghost" data-preset="requests">GET /v1/requests</button>
+      <button class="ghost" data-preset="create">POST /v1/requests</button>
+      <button class="ghost" data-preset="quotes">GET .../quotes</button>
+      <button class="ghost" data-preset="postquotes">POST .../quotes</button>
+      <button class="ghost" data-preset="search">GET .../routing/search</button>
+      <button class="ghost" data-preset="order">GET /v1/orders/ord_6003</button>
+      <button class="ghost" data-preset="points">GET /v1/points</button>
+      <button class="ghost" data-preset="notify">POST .../notify</button>
+    </div>
+    <div class="grid" style="margin-top:12px">
+      <div><label for="manualMethod">Метод</label>
+        <select id="manualMethod"><option>GET</option><option>POST</option></select></div>
+      <div style="grid-column:span 3"><label for="manualPath">Путь</label><input id="manualPath" value="/v1/requests"></div>
+    </div>
+    <div class="grid" style="margin-top:12px">
+      <div><label for="manualHeaders">Доп. заголовки (JSON)</label><textarea id="manualHeaders" style="min-height:80px">{}</textarea></div>
+      <div><label for="manualBody">Тело запроса (JSON, пусто для GET)</label><textarea id="manualBody"></textarea></div>
+    </div>
+    <div class="row"><button id="manualSend" type="button">Отправить</button><span id="manualStatus" class="small"></span></div>
+    <pre id="manualResponse" class="hidden"></pre>
+  </section>
+
+  <section class="card">
+    <h2>История вызовов</h2>
+    <table id="historyTable"><thead><tr><th>Время</th><th>Метод и путь</th><th>Статус</th><th class="num">Ответ</th></tr></thead>
+      <tbody><tr><td colspan="4" class="small">Вызовов пока нет.</td></tr></tbody></table>
+  </section>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const randomId = (prefix, len) => prefix + Math.random().toString(36).slice(2, 2 + len).replace(/[^a-z0-9]/gi, 'x');
+const esc = (value) => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const defaultDeadline = () => new Date(Date.now() + 2 * 86400000).toISOString().replace(/\.\d{3}Z$/, 'Z');
+const state = { requestId: '', deadline: '', weight: 10, routes: [], selected: new Set() };
+const history = [];
+
+$('requestId').value = randomId('req', 8);
+$('deadline').value = defaultDeadline();
+$('newId').addEventListener('click', () => { $('requestId').value = randomId('req', 8); });
+$('docsLink').addEventListener('click', (e) => { e.preventDefault(); window.open('http://localhost:8000/', '_blank'); });
+
+function config() {
+  return {
+    base_url: $('baseUrl').value.trim(),
+    api_key: $('apiKey').value.trim(),
+    timeout_s: Number($('timeout').value) || 25,
+  };
+}
+
+async function callApi(method, path, body = null, headers = null) {
+  const response = await fetch('/api/call', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({method, path, body, headers, ...config()}),
+  });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.detail || JSON.stringify(data));
+  addHistory(method, path, data);
+  return data;
+}
+
+function statusBadge(data) {
+  const good = data.status >= 200 && data.status < 300;
+  return `<span class="badge ${good ? 'ok' : 'bad'}">${data.status || 'ERR'} · ${data.time_ms} мс</span>`;
+}
+
+function addHistory(method, path, data) {
+  history.unshift({time: new Date().toLocaleTimeString(), method, path, data});
+  const rows = history.slice(0, 20).map(h => `<tr>
+    <td>${esc(h.time)}</td><td>${esc(h.method)} ${esc(h.path)}</td>
+    <td>${statusBadge(h.data)}</td><td class="num">${h.data.time_ms} мс</td></tr>`).join('');
+  document.querySelector('#historyTable tbody').innerHTML = rows;
+}
+
+function showPre(id, data) {
+  const el = $(id);
+  el.textContent = JSON.stringify(data.body, null, 2);
+  el.classList.remove('hidden');
+}
+
+function flowLog(text, data) {
+  const line = document.createElement('div');
+  line.className = 'row';
+  const label = document.createElement('span');
+  label.className = 'small';
+  label.textContent = text;
+  line.append(label, document.createElement('span'));
+  line.lastChild.innerHTML = statusBadge(data);
+  $('flowLog').appendChild(line);
+}
+
+function selectedModes() {
+  return [...document.querySelectorAll('input[name=mode]:checked')].map(el => el.value);
+}
+
+function requestBody() {
+  const body = {
+    request_id: $('requestId').value.trim() || randomId('req', 8),
+    origin: $('origin').value.trim(),
+    destination: $('destination').value.trim(),
+    allowed_modes: selectedModes(),
+    weight_t: Number($('weight').value),
+    cargo: {description: $('cargo').value.trim(), cargo_type: $('cargoType').value},
+    response_deadline: $('deadline').value.trim() || defaultDeadline(),
+    points_reward: Number($('points').value),
+  };
+  if ($('comment').value.trim()) body.comment = $('comment').value.trim();
+  return body;
+}
+
+function renderSearch(routes) {
+  const tbody = document.querySelector('#routesTable tbody');
+  if (!routes.length) {
+    tbody.innerHTML = '<tr><td colspan="6" class="small">Маршруты не найдены — попробите другую пару городов или режимы.</td></tr>';
+    $('publish').disabled = true;
+    return;
+  }
+  tbody.innerHTML = routes.map((r, i) => {
+    const price = Math.round(Number(r.total_cost_per_ton_rub || 0) * state.weight);
+    return `<tr>
+      <td><input type="checkbox" class="routePick" data-index="${i}" ${i < 3 ? 'checked' : ''}></td>
+      <td>${esc(r.mode)}</td>
+      <td><code>${esc((r.leg_ids || []).join(' → '))}</code></td>
+      <td class="num">${esc(r.total_duration_h)}</td>
+      <td class="num">${esc(r.total_cost_per_ton_rub)}</td>
+      <td class="num">${price}</td>
+    </tr>`;
+  }).join('');
+  document.querySelectorAll('.routePick').forEach(box => {
+    box.addEventListener('change', () => {
+      const idx = Number(box.dataset.index);
+      if (box.checked) state.selected.add(idx); else state.selected.delete(idx);
+      $('publish').disabled = state.selected.size === 0 || state.selected.size > 3;
+    });
+  });
+  state.selected = new Set(routes.slice(0, 3).map((_, i) => i));
+  $('publish').disabled = false;
+}
+
+async function runFlow() {
+  $('flowLog').innerHTML = '';
+  $('flowStatus').textContent = 'Выполняется…';
+  $('publish').disabled = true;
+  state.routes = [];
+  try {
+    const body = requestBody();
+    state.requestId = body.request_id;
+    state.deadline = body.response_deadline;
+    state.weight = body.weight_t;
+
+    const created = await callApi('POST', '/v1/requests', body,
+      {'Idempotency-Key': `${state.requestId}:soborny-kommit`});
+    flowLog('POST /v1/requests', created);
+    showPre('flowResponse', created);
+
+    if (created.status >= 400) {
+      $('flowStatus').textContent = 'Ошибка создания заявки';
+      return;
+    }
+
+    const query = new URLSearchParams({
+      origin: body.origin, destination: body.destination,
+      allowed_modes: body.allowed_modes.join(','), max_routes: '6',
+    });
+    const search = await callApi('GET', `/v1/routing/search?${query}`);
+    flowLog('GET /v1/routing/search', search);
+    showPre('flowResponse', search);
+
+    if (search.status !== 200 || !Array.isArray(search.body?.routes)) {
+      $('flowStatus').textContent = 'Поиск маршрутов недоступен';
+      return;
+    }
+    state.routes = search.body.routes;
+    renderSearch(state.routes);
+    $('flowStatus').textContent = `Найдено ${state.routes.length} маршрут(ов), ответ за ${search.time_ms} мс`;
+  } catch (err) {
+    $('flowStatus').textContent = err.message;
+  }
+}
+
+function buildVariants() {
+  const items = [...state.selected].map(i => {
+    const r = state.routes[i];
+    return {
+      route: r,
+      price: Math.round(Number(r.total_cost_per_ton_rub || 0) * state.weight) || 1,
+      duration: Number(r.total_duration_h) || 1,
+      label: null,
+    };
+  });
+  const byPrice = [...items].sort((a, b) => a.price - b.price);
+  byPrice[0].label = 'cheapest';
+  const byTime = [...items].sort((a, b) => a.duration - b.duration);
+  const fastest = byTime.find(item => item.label === null);
+  if (fastest) fastest.label = 'fastest';
+  items.forEach(item => { if (item.label === null) item.label = 'balanced'; });
+
+  const validUntil = new Date(new Date(state.deadline).getTime() + 5 * 60000)
+    .toISOString().replace(/\.\d{3}Z$/, 'Z');
+  return items.map(item => ({
+    quote_id: randomId('quo', 8),
+    variant: item.label,
+    price_rub: item.price,
+    duration_hours: item.duration,
+    route_id: item.route.route_id,
+    leg_ids: item.route.leg_ids,
+    valid_until: validUntil,
+    comment: `Вариант по маршруту ${item.route.mode}`,
+  }));
+}
+
+async function publish() {
+  const variants = buildVariants();
+  $('publish').disabled = true;
+  try {
+    const posted = await callApi('POST', `/v1/requests/${state.requestId}/quotes`, {variants});
+    flowLog('POST .../quotes', posted);
+    showPre('flowResponse', posted);
+
+    const quotes = await callApi('GET', `/v1/requests/${state.requestId}/quotes`);
+    flowLog('GET .../quotes', quotes);
+    showPre('flowResponse', quotes);
+
+    const list = Array.isArray(quotes.body) ? quotes.body : [];
+    document.querySelector('#quotesTable tbody').innerHTML = list.length ? list.map(q => `<tr>
+      <td>${esc(q.variant)}</td>
+      <td class="num"><b>${esc(q.price_rub)}</b></td>
+      <td class="num"><b>${esc(q.duration_hours)}</b></td>
+      <td><code>${esc((q.leg_ids || []).join(' → '))}</code></td>
+      <td>${esc(q.status)}</td>
+      <td>${esc(q.quote_id)}</td>
+    </tr>`).join('') : '<tr><td colspan="6" class="small">Сервер вернул пустой список котировок.</td></tr>';
+  } catch (err) {
+    $('flowStatus').textContent = err.message;
+  } finally {
+    $('publish').disabled = state.selected.size === 0 || state.selected.size > 3;
+  }
+}
+
+$('runFlow').addEventListener('click', runFlow);
+$('publish').addEventListener('click', publish);
+
+const presets = {
+  health: () => ['GET', '/healthz', null, '{}'],
+  requests: () => ['GET', '/v1/requests', null, '{}'],
+  create: () => ['POST', '/v1/requests', JSON.stringify(requestBody(), null, 2),
+    JSON.stringify({'Idempotency-Key': `${$('requestId').value}:soborny-kommit`}, null, 2)],
+  quotes: () => ['GET', `/v1/requests/${$('requestId').value}/quotes`, null, '{}'],
+  postquotes: () => ['POST', `/v1/requests/${$('requestId').value}/quotes`,
+    JSON.stringify({variants: buildVariants()}, null, 2), '{}'],
+  search: () => ['GET', `/v1/routing/search?origin=${encodeURIComponent($('origin').value)}&destination=${encodeURIComponent($('destination').value)}&allowed_modes=${selectedModes().join(',')}`, null, '{}'],
+  order: () => ['GET', '/v1/orders/ord_6003', null, '{}'],
+  points: () => ['GET', '/v1/points', null, '{}'],
+  notify: () => ['POST', '/v1/orders/ord_6003/notify', JSON.stringify({
+    order_id: 'ord_6003', status: 'delivered', delivered_at: defaultDeadline(),
+    route_id: 'rail:saint-petersburg-arkhangelsk',
+    leg_ids: ['rail:saint-petersburg-arkhangelsk', 'rail:arkhangelsk-moscow'], points_awarded: 80,
+  }, null, 2), '{}'],
+};
+
+document.querySelectorAll('#quick button').forEach(button => {
+  button.addEventListener('click', () => {
+    const makePreset = presets[button.dataset.preset];
+    if (!makePreset) return;
+    const [method, path, body, headers] = makePreset();
+    $('manualMethod').value = method;
+    $('manualPath').value = path;
+    $('manualBody').value = body || '';
+    $('manualHeaders').value = headers || '{}';
+  });
+});
+
+$('manualSend').addEventListener('click', async () => {
+  $('manualStatus').textContent = 'Выполняется…';
+  try {
+    const parseJson = (text, fallback) => text.trim() ? JSON.parse(text) : fallback;
+    const data = await callApi(
+      $('manualMethod').value,
+      $('manualPath').value.trim(),
+      parseJson($('manualBody').value, null),
+      parseJson($('manualHeaders').value, {}),
+    );
+    $('manualStatus').innerHTML = statusBadge(data);
+    showPre('manualResponse', data);
+  } catch (err) {
+    $('manualStatus').textContent = err.message;
+    $('manualResponse').textContent = err.message;
+    $('manualResponse').classList.remove('hidden');
+  }
+});
+</script>
+</body>
+</html>

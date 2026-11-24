@@ -27,13 +27,14 @@ dev = [
 validate-api = "scripts.checks:main"
 validate-dictionaries = "scripts.check_dictionaries:main"
 api-viewer = "api.viewer:main"
+api-console = "api.ui:main"
 check-service = "contract.check_service:main"
 
 [tool.setuptools]
 packages = ["api", "scripts", "stub", "contract"]
 
 [tool.setuptools.package-data]
-api = ["openapi.yaml"]
+api = ["openapi.yaml", "ui.html"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

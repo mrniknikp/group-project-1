@@ -80,8 +80,32 @@ api/
 ├── openapi.yaml   # контракт
 ├── examples/      # 4 тела: request, quote, order-notify, error
 ├── mocks/         # 6 согласованных наборов
-└── viewer.py      # Swagger UI и Redoc
+├── viewer.py      # Swagger UI и Redoc
+└── ui.py, ui.html # удобная панель для вызова API (console)
 ```
+
+## Панель API (`api-console`)
+
+`api/ui.py` поднимает веб-панель на `http://localhost:8001`:
+
+```bash
+api-console              # либо python3 api/ui.py 8001
+```
+
+В панели можно:
+
+- задать адрес API (по умолчанию `http://31.172.73.114:8080`), `X-Api-Key`
+  (по умолчанию `test-key`) и таймаут (по умолчанию 25 с);
+- пройти полный цикл «создать заявку → найти маршруты итеративным DFS →
+  опубликовать 1–3 варианта → получить котировки»;
+- увидеть **реальные** `price_rub` и `duration_hours` из ответа сервера, статус
+  и время каждого вызова;
+- вызвать любую из 8 операций вручную или через кнопки-пресеты.
+
+Запросы идут через серверную часть панели (`POST /api/call`), поэтому CORS
+на целевом API не нужен. Допущены только методы `GET`/`POST` и пути
+`/healthz`, `/db-check`, `/v1/...`. Swagger UI и Redoc остаются на порту 8000
+(`api-viewer`), ссылка на них есть в шапке панели.
 
 ## Моки
 
@@ -118,6 +142,7 @@ python3 scripts/check_dictionaries.py  # справочники dictionaries/
 ruff check . && python3 -m pytest -q   # линт и тесты (включая conformance)
 npx --yes @redocly/cli@1 lint api/openapi.yaml   # если доступен npx
 api-viewer                             # Swagger UI на http://localhost:8000
+api-console                            # панель вызовов на http://localhost:8001
 
 # исполняемая версия контракта и проверка любого URL
 uvicorn stub.app:app --port 8080 &
