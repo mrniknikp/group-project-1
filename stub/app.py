@@ -15,6 +15,7 @@ Stub — учебный эталон контракта, а не продакш�
 
 from __future__ import annotations
 
+import asyncio
 import hmac
 import os
 import re
@@ -29,6 +30,7 @@ from pydantic import BaseModel, ConfigDict, Discriminator, Field, Tag, field_val
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from .cache import Cache
+from .routing import DEFAULT_TIME_LIMIT_S, find_routes_iterative_dfs
 
 SERVICE_NAME = 'team-service'
 SERVICE_VERSION = '2.4.0'
@@ -681,6 +683,57 @@ def create_app(api_key: str | None = None) -> FastAPI:
         items = [dict(entry) for entry in state['points']]
         await cache.set_json(cache_key, items)
         return items
+
+    # ------------------------------------------------------------- routing
+
+    @app.get('/v1/routing/search')
+    async def routing_search(
+            origin: str, destination: str,
+            allowed_modes: str | None = None,
+            max_legs: int = 3,
+            max_routes: int = 10):
+        """Служебный поиск маршрута по справочникам (итеративный DFS).
+
+        Ограничение времени работы: 25 секунд.
+        """
+        modes = ([m.strip() for m in allowed_modes.split(',') if m.strip()]
+                 if allowed_modes else None)
+        max_legs = max(1, min(int(max_legs), 3))
+        max_routes = max(1, min(int(max_routes), 20))
+        try:
+            result = await asyncio.wait_for(
+                asyncio.to_thread(
+                    find_routes_iterative_dfs,
+                    origin, destination, modes,
+                    max_legs=max_legs,
+                    time_limit_s=DEFAULT_TIME_LIMIT_S,
+                    max_routes=max_routes,
+                ),
+                timeout=DEFAULT_TIME_LIMIT_S,
+            )
+        except asyncio.TimeoutError:
+            return error_response(
+                503, 'service_unavailable',
+                f'Поиск маршрута превысил лимит {int(DEFAULT_TIME_LIMIT_S)} с.',
+                {'origin': origin, 'destination': destination})
+
+        routes = []
+        for item in result['routes']:
+            routes.append({
+                'route_id': item['route_id'],
+                'leg_ids': item['leg_ids'],
+                'mode': item['mode'],
+                'total_duration_h': item['total_duration_h'],
+                'total_cost_per_ton_rub': item['total_cost_per_ton_rub'],
+            })
+        return {
+            'origin': origin,
+            'destination': destination,
+            'allowed_modes': modes,
+            'timed_out': result['timed_out'],
+            'visited_states': result['visited_states'],
+            'routes': routes,
+        }
 
     return app
 

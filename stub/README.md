@@ -51,6 +51,22 @@ REDIS_URL=redis://localhost:6379/0 REDIS_TTL=60 \
 `POST /v1/requests/{id}/quotes` связанные ключи инвалидируются. Если Redis
 недоступен, stub продолжает работать на in-memory состоянии.
 
+## Поиск маршрута (служебный)
+
+Для поиска маршрутов по справочникам `dictionaries/routes` добавлен служебный
+эндпоинт (не часть контрактных 8 операций):
+
+```bash
+curl -H "X-Api-Key: test-key" \
+  "http://127.0.0.1:8080/v1/routing/search?origin=moscow&destination=kazan&allowed_modes=road,rail"
+```
+
+Особенности:
+- поиск выполняется **итеративным DFS** (`stub/routing.py`);
+- ограничение по времени выполнения API — **25 секунд** (`DEFAULT_TIME_LIMIT_S`, также обёрнуто `asyncio.wait_for`);
+- `max_legs` ограничен 1..3, `max_routes` ограничен 1..20;
+- ответ содержит `routes`, `timed_out`, `visited_states`.
+
 ## Сидовые данные
 
 | Что                               | ID         | Значения                                                                                                                        |
