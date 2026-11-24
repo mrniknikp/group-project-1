@@ -66,3 +66,15 @@ def test_proxy_rejects_unsafe_requests(method: str, path: str):
 def test_validate_allows_contract_paths(path: str):
     request = CallRequest(method='GET', path=path)
     assert ui._validate(request).endswith(path)
+
+
+def test_generated_ids_have_required_underscore():
+    """Регрессия: без подчёркивания API возвращает 422 на req_/quo_."""
+    import re
+
+    from api.ui import PAGE_PATH
+
+    html = PAGE_PATH.read_text(encoding='utf-8')
+    definition = re.search(r'const randomId = .*?;', html).group(0)
+    assert "prefix + '_'" in definition
+    assert 'details' in html and 'fields' in html  # ошибки валидации видны в панели

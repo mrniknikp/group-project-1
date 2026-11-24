@@ -147,14 +147,17 @@
 
   <section class="card">
     <h2>История вызовов</h2>
-    <table id="historyTable"><thead><tr><th>Время</th><th>Метод и путь</th><th>Статус</th><th class="num">Ответ</th></tr></thead>
-      <tbody><tr><td colspan="4" class="small">Вызовов пока нет.</td></tr></tbody></table>
+    <p class="small">Нажмите на строку, чтобы увидеть отправленное тело и полный ответ API.</p>
+    <table id="historyTable"><thead><tr><th>Время</th><th>Метод и путь</th><th>Статус</th><th class="num">Ответ</th><th>Что вернул API</th></tr></thead>
+      <tbody><tr><td colspan="5" class="small">Вызовов пока нет.</td></tr></tbody></table>
   </section>
 </div>
 
 <script>
 const $ = (id) => document.getElementById(id);
-const randomId = (prefix, len) => prefix + Math.random().toString(36).slice(2, 2 + len).replace(/[^a-z0-9]/gi, 'x');
+// Контракт требует req_<суффикс> и quo_<суффикс>: подчёркивание обязательно.
+const randomId = (prefix, len) => prefix + '_' + Math.random().toString(36).slice(2, 2 + len).replace(/[^a-z0-9]/gi, 'x');
+const validRubyId = (value, prefix) => new RegExp(`^${prefix}_[A-Za-z0-9]{2,32}$`).test(value);
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const defaultDeadline = () => new Date(Date.now() + 2 * 86400000).toISOString().replace(/\.\d{3}Z$/, 'Z');
 const state = { requestId: '', deadline: '', weight: 10, routes: [], selected: new Set() };
@@ -181,8 +184,34 @@ async function callApi(method, path, body = null, headers = null) {
   });
   const data = await response.json();
   if (!response.ok) throw new Error(data.detail || JSON.stringify(data));
-  addHistory(method, path, data);
+  addHistory(method, path, data, body);
   return data;
+}
+
+function errorText(data) {
+  const fields = data.body?.details?.fields;
+  if (Array.isArray(fields) && fields.length) {
+    return fields.map(f => `${f.loc}: ${f.message}`).join('; ');
+  }
+  return data.body?.message || data.body?.detail || JSON.stringify(data.body);
+}
+
+function showError(container, data) {
+  const div = document.createElement('div');
+  div.className = 'err';
+  div.textContent = `${data.status || 'ERR'}: ${errorText(data)}`;
+  container.appendChild(div);
+}
+
+function summarize(body) {
+  if (body == null) return '';
+  if (Array.isArray(body)) return `${body.length} записей`;
+  if (typeof body === 'object') {
+    if (body.code) return `${body.code}: ${body.message || ''}`;
+    if (Array.isArray(body.variants)) return `${body.variants.length} вариантов`;
+    return Object.keys(body).slice(0, 4).join(', ');
+  }
+  return String(body);
 }
 
 function statusBadge(data) {
@@ -190,12 +219,22 @@ function statusBadge(data) {
   return `<span class="badge ${good ? 'ok' : 'bad'}">${data.status || 'ERR'} · ${data.time_ms} мс</span>`;
 }
 
-function addHistory(method, path, data) {
-  history.unshift({time: new Date().toLocaleTimeString(), method, path, data});
-  const rows = history.slice(0, 20).map(h => `<tr>
+function addHistory(method, path, data, request) {
+  history.unshift({time: new Date().toLocaleTimeString(), method, path, data, request});
+  const rows = history.slice(0, 20).map((h, i) => `<tr class="histRow" data-hist="${i}" style="cursor:pointer">
     <td>${esc(h.time)}</td><td>${esc(h.method)} ${esc(h.path)}</td>
-    <td>${statusBadge(h.data)}</td><td class="num">${h.data.time_ms} мс</td></tr>`).join('');
-  document.querySelector('#historyTable tbody').innerHTML = rows;
+    <td>${statusBadge(h.data)}</td><td class="num">${h.data.time_ms} мс</td>
+    <td>${esc(summarize(h.data.body))}</td></tr>
+    <tr class="histDetail hidden" data-detail="${i}"><td colspan="5"><pre>${esc(JSON.stringify({
+      request: h.request || null, response: h.data.body,
+    }, null, 2))}</pre></td></tr>`).join('');
+  const tbody = document.querySelector('#historyTable tbody');
+  tbody.innerHTML = rows;
+  tbody.querySelectorAll('.histRow').forEach(row => {
+    row.addEventListener('click', () => {
+      tbody.querySelector(`.histDetail[data-detail="${row.dataset.hist}"]`).classList.toggle('hidden');
+    });
+  });
 }
 
 function showPre(id, data) {
@@ -220,8 +259,15 @@ function selectedModes() {
 }
 
 function requestBody() {
+  // API требует req_<буквы/цифры>; скопированный req_real_001 не подходит.
+  let requestId = $('requestId').value.trim();
+  if (!validRubyId(requestId, 'req')) {
+    requestId = 'req_' + requestId.replace(/[^A-Za-z0-9]/g, '').slice(0, 32);
+    if (!validRubyId(requestId, 'req')) requestId = randomId('req', 8);
+    $('requestId').value = requestId;
+  }
   const body = {
-    request_id: $('requestId').value.trim() || randomId('req', 8),
+    request_id: requestId,
     origin: $('origin').value.trim(),
     destination: $('destination').value.trim(),
     allowed_modes: selectedModes(),
@@ -263,12 +309,33 @@ function renderSearch(routes) {
   $('publish').disabled = false;
 }
 
+function validateForm() {
+  const problems = [];
+  const body = requestBody(); // нормализует request_id
+  const locationId = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+  if (!locationId.test(body.origin)) problems.push('origin: латиница, цифры и дефис');
+  if (!locationId.test(body.destination)) problems.push('destination: латиница, цифры и дефис');
+  if (!body.allowed_modes.length) problems.push('выберите хотя бы один режим');
+  if (!(body.weight_t > 0)) problems.push('weight_t должен быть больше нуля');
+  if (!(Number.isInteger(body.points_reward) && body.points_reward >= 1 && body.points_reward <= 10000)) {
+    problems.push('points_reward: целое от 1 до 10000');
+  }
+  if (!body.cargo.description) problems.push('cargo.description не должен быть пустым');
+  if (Number.isNaN(new Date(body.response_deadline).getTime())) problems.push('response_deadline: некорректная дата');
+  return problems;
+}
+
 async function runFlow() {
   $('flowLog').innerHTML = '';
   $('flowStatus').textContent = 'Выполняется…';
   $('publish').disabled = true;
   state.routes = [];
   try {
+    const problems = validateForm();
+    if (problems.length) {
+      $('flowStatus').textContent = problems.join('; ');
+      return;
+    }
     const body = requestBody();
     state.requestId = body.request_id;
     state.deadline = body.response_deadline;
@@ -281,6 +348,7 @@ async function runFlow() {
 
     if (created.status >= 400) {
       $('flowStatus').textContent = 'Ошибка создания заявки';
+      showError('flowLog', created);
       return;
     }
 
@@ -294,6 +362,7 @@ async function runFlow() {
 
     if (search.status !== 200 || !Array.isArray(search.body?.routes)) {
       $('flowStatus').textContent = 'Поиск маршрутов недоступен';
+      showError('flowLog', search);
       return;
     }
     state.routes = search.body.routes;
@@ -342,6 +411,10 @@ async function publish() {
     const posted = await callApi('POST', `/v1/requests/${state.requestId}/quotes`, {variants});
     flowLog('POST .../quotes', posted);
     showPre('flowResponse', posted);
+    if (posted.status >= 400) {
+      showError('flowLog', posted);
+      return;
+    }
 
     const quotes = await callApi('GET', `/v1/requests/${state.requestId}/quotes`);
     flowLog('GET .../quotes', quotes);
@@ -408,6 +481,7 @@ $('manualSend').addEventListener('click', async () => {
     );
     $('manualStatus').innerHTML = statusBadge(data);
     showPre('manualResponse', data);
+    if (data.status >= 400) showError('manualStatus', data);
   } catch (err) {
     $('manualStatus').textContent = err.message;
     $('manualResponse').textContent = err.message;
