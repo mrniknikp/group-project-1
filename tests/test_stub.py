@@ -403,8 +403,8 @@ def notify_body(**overrides) -> dict:
         'order_id': 'ord_6003',
         'status': 'delivered',
         'delivered_at': '2026-11-17T03:40:00Z',
-        'route_id': 'rail:saint-petersburg-novosibirsk',
-        'leg_ids': ['rail:saint-petersburg-novosibirsk'],
+        'route_id': 'rail:saint-petersburg-arkhangelsk',
+        'leg_ids': ['rail:saint-petersburg-arkhangelsk'],
         'points_awarded': 80,
     }
     body.update(overrides)
@@ -453,7 +453,7 @@ def test_subcontract_notification_is_idempotent_by_key(app):
     body = notify_body(**{'status': 'subcontract_delivered',
                           'subcontract_id': 'sub_t01',
                           'order_id': 'ord_6003',
-                          'route_id': 'rail:saint-petersburg-novosibirsk'})
+                          'route_id': 'rail:saint-petersburg-arkhangelsk'})
     first = call(app, 'post', '/v1/orders/ord_6003/notify', json=body,
                  headers=headers())
     assert first.status_code == 204

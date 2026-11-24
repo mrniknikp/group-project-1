@@ -1,15 +1,17 @@
 schema_version: 2
 updated: '2026-11-21'
-description: '4 уведомления портала: delivered и subcontract_delivered (события доставки), order_won и экспериментальное order_lost. Доставка идемпотентна по (order_id, subcontract_id), события — по Idempotency-Key.'
+description: '4 уведомления портала: delivered и subcontract_delivered (события доставки), order_won и
+  экспериментальное order_lost. Доставка идемпотентна по (order_id, subcontract_id), события — по Idempotency-Key.'
 reference_date: '2026-11-17'
 notifications:
 - id: ntf_8001
   order_id: ord_6003
   status: delivered
   delivered_at: '2026-11-17T03:40:00Z'
-  route_id: road:kazan-yekaterinburg
+  route_id: rail:saint-petersburg-arkhangelsk
   leg_ids:
-  - road:kazan-yekaterinburg
+  - rail:saint-petersburg-arkhangelsk
+  - rail:arkhangelsk-moscow
   points_awarded: 100
   idempotency_key: ord_6003
 - id: ntf_8002
@@ -17,9 +19,11 @@ notifications:
   subcontract_id: sub_9001
   status: subcontract_delivered
   delivered_at: '2026-11-17T09:00:00Z'
-  route_id: rail:saint-petersburg-novosibirsk
+  route_id: road:kazan-izhevsk
   leg_ids:
-  - rail:saint-petersburg-novosibirsk
+  - road:kazan-izhevsk
+  - road:izhevsk-perm
+  - road:perm-yekaterinburg
   points_awarded: 40
   idempotency_key: ord_6002:sub_9001
 - id: ntf_8003
@@ -27,9 +31,9 @@ notifications:
   order_id: ord_6001
   request_id: req_5001
   team_id: team-1
-  route_id: rail:moscow-vladivostok
-  leg_ids:
-  - rail:moscow-vladivostok
+  route_id: road:moscow-kazan
+  leg_ids: &id001
+  - road:moscow-kazan
   price_rub: 1880000
   duration_hours: 227
   points_reward: 100
@@ -40,9 +44,8 @@ notifications:
   order_id: ord_6010
   request_id: req_5004
   team_id: team-1
-  route_id: road:novosibirsk-tomsk
-  leg_ids:
-  - road:novosibirsk-tomsk
+  route_id: road:moscow-kazan
+  leg_ids: *id001
   reason: not_selected
   message: 'Заявка закрыта: выбрана другая котировка.'
   idempotency_key: exchange:order:ord_6010:lost:team-1:v1

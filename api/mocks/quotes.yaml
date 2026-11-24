@@ -1,6 +1,7 @@
 schema_version: 2
 updated: '2026-11-17'
-description: '8 котировок команды: вариант (cheapest/fastest/balanced), price_rub, срок, route_id/leg_ids; статусы submitted/accepted/lost/expired.'
+description: '8 котировок команды: вариант (cheapest/fastest/balanced), price_rub, срок, route_id/leg_ids;
+  статусы submitted/accepted/lost/expired.'
 reference_date: '2026-11-17'
 quotes:
 - quote_id: quo_7001
@@ -9,52 +10,54 @@ quotes:
   status: accepted
   price_rub: 1880000
   duration_hours: 227
-  route_id: rail:moscow-vladivostok
+  route_id: road:moscow-kazan
   leg_ids:
-  - rail:moscow-vladivostok
+  - road:moscow-kazan
   valid_until: '2026-11-19T20:00:00Z'
   received_seq: 1001
   received_at: '2026-11-17T07:10:00Z'
-  comment: Ж/д до Хабаровска, авто до Владивостока.
+  comment: Авто, прямой рейс.
 - quote_id: quo_7002
   request_id: req_5002
   variant: cheapest
   status: accepted
   price_rub: 720000
   duration_hours: 96.5
-  route_id: rail:saint-petersburg-novosibirsk
-  leg_ids:
-  - rail:saint-petersburg-novosibirsk
+  route_id: rail:saint-petersburg-arkhangelsk
+  leg_ids: &id002
+  - rail:saint-petersburg-arkhangelsk
+  - rail:arkhangelsk-moscow
   valid_until: '2026-11-20T10:00:00Z'
   received_seq: 1002
   received_at: '2026-11-16T11:00:00Z'
-  comment: Ж/д, две перегрузки.
+  comment: Ж/д через Архангельск.
 - quote_id: quo_7003
   request_id: req_5003
   variant: cheapest
   status: accepted
   price_rub: 61000
   duration_hours: 17.2
-  route_id: road:kazan-yekaterinburg
-  leg_ids:
-  - road:kazan-yekaterinburg
+  route_id: road:kazan-izhevsk
+  leg_ids: &id001
+  - road:kazan-izhevsk
+  - road:izhevsk-perm
+  - road:perm-yekaterinburg
   valid_until: '2026-11-18T09:00:00Z'
   received_seq: 1003
   received_at: '2026-11-15T10:00:00Z'
-  comment: Авто, тентованный полуприцеп.
+  comment: Авто, через Ижевск и Пермь.
 - quote_id: quo_7004
   request_id: req_5003
   variant: fastest
   status: lost
   price_rub: 66000
   duration_hours: 15.0
-  route_id: road:kazan-yekaterinburg
-  leg_ids:
-  - road:kazan-yekaterinburg
+  route_id: road:kazan-izhevsk
+  leg_ids: *id001
   valid_until: '2026-11-18T12:00:00Z'
   received_seq: 1004
   received_at: '2026-11-15T12:00:00Z'
-  comment: Авто, экспресс.
+  comment: Авто, альтернативный график.
 - quote_id: quo_7005
   request_id: req_5004
   variant: balanced
@@ -74,36 +77,37 @@ quotes:
   status: accepted
   price_rub: 390000
   duration_hours: 14.5
-  route_id: air:moscow-magadan
+  route_id: air:moscow-astrakhan
   leg_ids:
-  - air:moscow-magadan
+  - air:moscow-astrakhan
+  - air:astrakhan-istanbul
+  - air:istanbul-sochi
   valid_until: '2026-11-18T12:00:00Z'
   received_seq: 1006
   received_at: '2026-11-14T10:00:00Z'
-  comment: Авиа, один борт.
+  comment: Авиа через Астрахань и Стамбул.
 - quote_id: quo_7007
   request_id: req_5002
   variant: fastest
   status: submitted
   price_rub: 760000
   duration_hours: 90.0
-  route_id: rail:saint-petersburg-novosibirsk
-  leg_ids:
-  - rail:saint-petersburg-novosibirsk
+  route_id: rail:saint-petersburg-arkhangelsk
+  leg_ids: *id002
   valid_until: '2026-11-21T10:00:00Z'
   received_seq: 1007
   received_at: '2026-11-17T08:00:00Z'
-  comment: Ж/д, ускоренный состав.
+  comment: Ж/д через Архангельск.
 - quote_id: quo_7008
   request_id: req_5001
   variant: fastest
   status: submitted
-  price_rub: 1950000
-  duration_hours: 210
-  route_id: rail:moscow-vladivostok
+  price_rub: 2140000
+  duration_hours: 16
+  route_id: rail:moscow-kazan
   leg_ids:
-  - rail:moscow-vladivostok
+  - rail:moscow-kazan
   valid_until: '2026-11-20T18:00:00Z'
   received_seq: 1008
   received_at: '2026-11-17T09:00:00Z'
-  comment: Ж/д до Хабаровска, авто до Владивостока.
+  comment: Ж/д, быстрее по графику.

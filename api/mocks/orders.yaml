@@ -1,37 +1,37 @@
 schema_version: 2
 updated: '2026-11-17'
-description: '4 заказа — по одной на OrderStatus. Read-only снимок; ID синтетические.'
+description: 4 заказа — по одной на OrderStatus. Read-only снимок; ID синтетические.
 reference_date: '2026-11-17'
 orders:
 - order_id: ord_6001
   request_id: req_5001
   quote_id: quo_7001
-  route_id: rail:moscow-vladivostok
+  route_id: road:moscow-kazan
   status: confirmed
   price_rub: 1880000
   created_at: '2026-11-17T07:30:00Z'
   points_awarded: 0
 - order_id: ord_6002
-  request_id: req_5002
-  quote_id: quo_7002
-  route_id: rail:saint-petersburg-novosibirsk
+  request_id: req_5003
+  quote_id: quo_7003
+  route_id: road:kazan-izhevsk
   status: in_transit
-  price_rub: 720000
+  price_rub: 270000
   created_at: '2026-11-16T12:00:00Z'
   points_awarded: 0
 - order_id: ord_6003
-  request_id: req_5003
-  quote_id: quo_7003
-  route_id: road:kazan-yekaterinburg
+  request_id: req_5002
+  quote_id: quo_7007
+  route_id: rail:saint-petersburg-arkhangelsk
   status: delivered
-  price_rub: 61000
+  price_rub: 760000
   created_at: '2026-11-15T11:00:00Z'
   delivered_at: '2026-11-17T03:40:00Z'
   points_awarded: 100
 - order_id: ord_6004
   request_id: req_5005
   quote_id: quo_7006
-  route_id: air:moscow-magadan
+  route_id: air:moscow-astrakhan
   status: failed
   price_rub: 390000
   created_at: '2026-11-14T11:00:00Z'

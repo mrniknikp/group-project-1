@@ -12,6 +12,12 @@
 приёмки или подтверждения. Баллы — только `order_delivery` и
 `subcontract_delivery`.
 
+## Наша команда
+
+**Соборный коммит** (`soborny-kommit`)
+- Репозиторий: https://git.codenotes.ru/team-soborny-kommit/team-service
+- Публичный хост: https://team-soborny-kommit.codenotes.ru
+
 ## Команды и доступы
 
 Доступы (логины, БД, логи сервиса) — в студенческом портале:

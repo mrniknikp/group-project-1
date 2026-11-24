@@ -485,8 +485,9 @@ def check_examples(spec: dict[str, Any]) -> list[str]:
 # --------------------------------------------------------------------- канон id
 
 # Канон портала: id маршрута и плеча — id сегмента справочника
-# `<mode>:<from>-<to>` (например `road:moscow-tula`). В v1 плечо = сегмент,
-# поэтому `leg_ids` содержит тот же id, что `route_id`.
+# `<mode>:<from>-<to>` (например `road:moscow-tula`). `leg_ids` —
+# упорядоченная цепочка 1–3 сегментов от origin до destination,
+# `route_id` — её первый сегмент.
 ROUTE_ID_PATTERN = (r'^[a-z][a-z0-9_]*:[a-z0-9]+(?:-[a-z0-9]+)*'
                     r'-[a-z0-9]+(?:-[a-z0-9]+)*$')
 ROUTE_ID = re.compile(ROUTE_ID_PATTERN)
@@ -504,28 +505,31 @@ def check_route_ids(spec: dict[str, Any], mocks: dict[str, Any]) -> list[str]:
             if not ROUTE_ID.fullmatch(str(value)):
                 errors.append(f'{name}: пример {value!r} вне канона')
 
+    def check_leg_chain(route_id: Any, legs: Any, where: str) -> None:
+        if not isinstance(route_id, str) or not ROUTE_ID.fullmatch(route_id):
+            errors.append(f'{where}: route_id {route_id!r} вне канона')
+            return
+        if not isinstance(legs, list) or not legs:
+            errors.append(f'{where}: leg_ids должен быть непустым массивом')
+            return
+        if len(legs) > 3:
+            errors.append(f'{where}: leg_ids содержит {len(legs)} сегментов, '
+                          'допустимо 1–3')
+        for leg_id in legs:
+            if not isinstance(leg_id, str) or not ROUTE_ID.fullmatch(leg_id):
+                errors.append(f'{where}: leg_id {leg_id!r} вне канона')
+        if legs[0] != route_id:
+            errors.append(f'{where}: route_id {route_id!r} должен совпадать '
+                          f'с первым leg_id {legs[0]!r}')
+
     def check_hint(hint: Any, where: str) -> None:
         if not isinstance(hint, dict):
             errors.append(f'{where}: route_hint не объект')
             return
-        route_id = hint.get('route_id')
-        if not isinstance(route_id, str) or not ROUTE_ID.fullmatch(route_id):
-            errors.append(f'{where}: route_id {route_id!r} вне канона')
-            return
-        legs = hint.get('leg_ids') or []
-        if legs != [route_id]:
-            errors.append(f'{where}: leg_ids {legs!r}, в v1 ожидается '
-                          f'[{route_id!r}]')
+        check_leg_chain(hint.get('route_id'), hint.get('leg_ids'), where)
 
     def check_body(body: dict[str, Any], where: str) -> None:
-        route_id = body.get('route_id')
-        if not isinstance(route_id, str) or not ROUTE_ID.fullmatch(route_id):
-            errors.append(f'{where}: route_id {route_id!r} вне канона')
-            return
-        legs = body.get('leg_ids')
-        if legs is not None and legs != [route_id]:
-            errors.append(f'{where}: leg_ids {legs!r}, в v1 ожидается '
-                          f'[{route_id!r}]')
+        check_leg_chain(body.get('route_id'), body.get('leg_ids'), where)
 
     for item in mocks['requests']['requests']:
         for hint in item.get('route_hints') or ():

@@ -1,17 +1,25 @@
 {
   "request_id": "req_5001",
   "origin": "moscow",
-  "destination": "vladivostok",
-  "allowed_modes": ["rail", "road"],
+  "destination": "kazan",
+  "allowed_modes": [
+    "rail",
+    "road"
+  ],
   "weight_t": 18.5,
   "cargo": {
-    "description": "Сборный груз, контейнер 40 футов.",
+    "description": "Сборный груз, паллеты.",
     "cargo_type": "general"
   },
   "response_deadline": "2026-11-19T18:00:00Z",
   "points_reward": 100,
   "route_hints": [
-    {"route_id": "rail:moscow-vladivostok", "leg_ids": ["rail:moscow-vladivostok"]}
+    {
+      "route_id": "road:moscow-kazan",
+      "leg_ids": [
+        "road:moscow-kazan"
+      ]
+    }
   ],
   "comment": "Погрузка на терминале заказчика."
 }

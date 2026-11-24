@@ -2,9 +2,11 @@
   "order_id": "ord_6003",
   "status": "delivered",
   "delivered_at": "2026-11-17T03:40:00Z",
-  "route_id": "road:kazan-yekaterinburg",
+  "route_id": "road:kazan-izhevsk",
   "leg_ids": [
-    "road:kazan-yekaterinburg"
+    "road:kazan-izhevsk",
+    "road:izhevsk-perm",
+    "road:perm-yekaterinburg"
   ],
   "points_awarded": 100
 }
