@@ -1,0 +1,34 @@
+{
+  "variants": [
+    {
+      "quote_id": "quo_7011",
+      "variant": "cheapest",
+      "price_rub": 1950000,
+      "duration_hours": 210,
+      "route_id": "rail:moscow-vladivostok",
+      "leg_ids": ["rail:moscow-vladivostok"],
+      "valid_until": "2026-11-20T18:00:00Z",
+      "comment": "Ж/д до Хабаровска, авто до Владивостока."
+    },
+    {
+      "quote_id": "quo_7009",
+      "variant": "fastest",
+      "price_rub": 2140000,
+      "duration_hours": 168,
+      "route_id": "rail:moscow-vladivostok",
+      "leg_ids": ["rail:moscow-vladivostok"],
+      "valid_until": "2026-11-20T18:00:00Z",
+      "comment": "Авиа до Хабаровска, авто до Владивостока."
+    },
+    {
+      "quote_id": "quo_7010",
+      "variant": "balanced",
+      "price_rub": 2020000,
+      "duration_hours": 190,
+      "route_id": "rail:moscow-vladivostok",
+      "leg_ids": ["rail:moscow-vladivostok"],
+      "valid_until": "2026-11-20T18:00:00Z",
+      "comment": "Ж/д с ускоренной перегрузкой."
+    }
+  ]
+}

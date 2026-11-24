@@ -1,0 +1,543 @@
+schema_version: 3
+updated: 2026-11-11
+mode: rail
+distance_unit: km
+duration_unit: h
+cost_unit: RUB/ton
+bidirectional: true
+description: >
+  Сеть железнодорожных коридоров и сухопутных переходов.
+  distance_km — километраж по существующим линиям (включая Транссиб,
+  переходы через Босфор и мосты), а не по прямой.
+  Время: distance/60 + 6 ч. Стоимость: 3000 + 6 RUB за тонно-км.
+routes:
+  - from: almaty
+    to: beijing
+    distance_km: 3600
+    duration_h: 66.0
+    cost_per_ton_rub: 24600
+  - from: almaty
+    to: novosibirsk
+    distance_km: 1600
+    duration_h: 32.7
+    cost_per_ton_rub: 12600
+  - from: almaty
+    to: tehran
+    distance_km: 2600
+    duration_h: 49.3
+    cost_per_ton_rub: 18600
+  - from: amsterdam
+    to: berlin
+    distance_km: 650
+    duration_h: 16.8
+    cost_per_ton_rub: 6900
+  - from: amsterdam
+    to: hamburg
+    distance_km: 460
+    duration_h: 13.7
+    cost_per_ton_rub: 5760
+  - from: amsterdam
+    to: rotterdam
+    distance_km: 80
+    duration_h: 7.3
+    cost_per_ton_rub: 3480
+  - from: arkhangelsk
+    to: moscow
+    distance_km: 1200
+    duration_h: 26.0
+    cost_per_ton_rub: 10200
+  - from: arkhangelsk
+    to: saint-petersburg
+    distance_km: 1200
+    duration_h: 26.0
+    cost_per_ton_rub: 10200
+  - from: astrakhan
+    to: makhachkala
+    distance_km: 400
+    duration_h: 12.7
+    cost_per_ton_rub: 5400
+  - from: astrakhan
+    to: volgograd
+    distance_km: 450
+    duration_h: 13.5
+    cost_per_ton_rub: 5700
+  - from: bangkok
+    to: singapore
+    distance_km: 1900
+    duration_h: 37.7
+    cost_per_ton_rub: 14400
+  - from: barnaul
+    to: novosibirsk
+    distance_km: 220
+    duration_h: 9.7
+    cost_per_ton_rub: 4320
+  - from: beijing
+    to: chita
+    distance_km: 1500
+    duration_h: 31.0
+    cost_per_ton_rub: 12000
+  - from: beijing
+    to: dalian
+    distance_km: 900
+    duration_h: 21.0
+    cost_per_ton_rub: 8400
+  - from: beijing
+    to: shanghai
+    distance_km: 1310
+    duration_h: 27.8
+    cost_per_ton_rub: 10860
+  - from: beijing
+    to: tianjin
+    distance_km: 130
+    duration_h: 8.2
+    cost_per_ton_rub: 3780
+  - from: beijing
+    to: ulan-ude
+    distance_km: 1609
+    duration_h: 32.8
+    cost_per_ton_rub: 12654
+  - from: berlin
+    to: frankfurt
+    distance_km: 550
+    duration_h: 15.2
+    cost_per_ton_rub: 6300
+  - from: berlin
+    to: hamburg
+    distance_km: 290
+    duration_h: 10.8
+    cost_per_ton_rub: 4740
+  - from: berlin
+    to: moscow
+    distance_km: 1800
+    duration_h: 36.0
+    cost_per_ton_rub: 13800
+  - from: berlin
+    to: warsaw
+    distance_km: 570
+    duration_h: 15.5
+    cost_per_ton_rub: 6420
+  - from: buenos-aires
+    to: sao-paulo
+    distance_km: 2200
+    duration_h: 42.7
+    cost_per_ton_rub: 16200
+  - from: busan
+    to: seoul
+    distance_km: 400
+    duration_h: 12.7
+    cost_per_ton_rub: 5400
+  - from: chelyabinsk
+    to: ufa
+    distance_km: 420
+    duration_h: 13.0
+    cost_per_ton_rub: 5520
+  - from: chelyabinsk
+    to: yekaterinburg
+    distance_km: 250
+    duration_h: 10.2
+    cost_per_ton_rub: 4500
+  - from: chicago
+    to: houston
+    distance_km: 1517
+    duration_h: 31.3
+    cost_per_ton_rub: 12102
+  - from: chicago
+    to: los-angeles
+    distance_km: 3200
+    duration_h: 59.3
+    cost_per_ton_rub: 22200
+  - from: chicago
+    to: mexico-city
+    distance_km: 3000
+    duration_h: 56.0
+    cost_per_ton_rub: 21000
+  - from: chicago
+    to: new-york
+    distance_km: 1146
+    duration_h: 25.1
+    cost_per_ton_rub: 9876
+  - from: chicago
+    to: toronto
+    distance_km: 850
+    duration_h: 20.2
+    cost_per_ton_rub: 8100
+  - from: chita
+    to: khabarovsk
+    distance_km: 2200
+    duration_h: 42.7
+    cost_per_ton_rub: 16200
+  - from: chita
+    to: ulan-ude
+    distance_km: 650
+    duration_h: 16.8
+    cost_per_ton_rub: 6900
+  - from: chita
+    to: yakutsk
+    distance_km: 1500
+    duration_h: 31.0
+    cost_per_ton_rub: 12000
+  - from: delhi
+    to: mumbai
+    distance_km: 1400
+    duration_h: 29.3
+    cost_per_ton_rub: 11400
+  - from: frankfurt
+    to: hamburg
+    distance_km: 500
+    duration_h: 14.3
+    cost_per_ton_rub: 6000
+  - from: frankfurt
+    to: paris
+    distance_km: 600
+    duration_h: 16.0
+    cost_per_ton_rub: 6600
+  - from: guangzhou
+    to: ho-chi-minh-city
+    distance_km: 1900
+    duration_h: 37.7
+    cost_per_ton_rub: 14400
+  - from: guangzhou
+    to: shanghai
+    distance_km: 1800
+    duration_h: 36.0
+    cost_per_ton_rub: 13800
+  - from: guangzhou
+    to: shenzhen
+    distance_km: 140
+    duration_h: 8.3
+    cost_per_ton_rub: 3840
+  - from: helsinki
+    to: moscow
+    distance_km: 1080
+    duration_h: 24.0
+    cost_per_ton_rub: 9480
+  - from: helsinki
+    to: saint-petersburg
+    distance_km: 420
+    duration_h: 13.0
+    cost_per_ton_rub: 5520
+  - from: hong-kong
+    to: shenzhen
+    distance_km: 40
+    duration_h: 6.7
+    cost_per_ton_rub: 3240
+  - from: houston
+    to: los-angeles
+    distance_km: 2208
+    duration_h: 42.8
+    cost_per_ton_rub: 16248
+  - from: houston
+    to: mexico-city
+    distance_km: 1500
+    duration_h: 31.0
+    cost_per_ton_rub: 12000
+  - from: irkutsk
+    to: krasnoyarsk
+    distance_km: 1080
+    duration_h: 24.0
+    cost_per_ton_rub: 9480
+  - from: irkutsk
+    to: ulan-ude
+    distance_km: 460
+    duration_h: 13.7
+    cost_per_ton_rub: 5760
+  - from: istanbul
+    to: moscow
+    distance_km: 1758
+    duration_h: 35.3
+    cost_per_ton_rub: 13548
+  - from: istanbul
+    to: tehran
+    distance_km: 2500
+    duration_h: 47.7
+    cost_per_ton_rub: 18000
+  - from: istanbul
+    to: warsaw
+    distance_km: 1900
+    duration_h: 37.7
+    cost_per_ton_rub: 14400
+  - from: izhevsk
+    to: kazan
+    distance_km: 380
+    duration_h: 12.3
+    cost_per_ton_rub: 5280
+  - from: kaliningrad
+    to: moscow
+    distance_km: 1300
+    duration_h: 27.7
+    cost_per_ton_rub: 10800
+  - from: kaliningrad
+    to: saint-petersburg
+    distance_km: 1100
+    duration_h: 24.3
+    cost_per_ton_rub: 9600
+  - from: kaliningrad
+    to: warsaw
+    distance_km: 400
+    duration_h: 12.7
+    cost_per_ton_rub: 5400
+  - from: kazan
+    to: moscow
+    distance_km: 790
+    duration_h: 19.2
+    cost_per_ton_rub: 7740
+  - from: kazan
+    to: naberezhnye-chelny
+    distance_km: 250
+    duration_h: 10.2
+    cost_per_ton_rub: 4500
+  - from: kazan
+    to: nizhny-novgorod
+    distance_km: 400
+    duration_h: 12.7
+    cost_per_ton_rub: 5400
+  - from: kazan
+    to: perm
+    distance_km: 500
+    duration_h: 14.3
+    cost_per_ton_rub: 6000
+  - from: kazan
+    to: samara
+    distance_km: 450
+    duration_h: 13.5
+    cost_per_ton_rub: 5700
+  - from: kazan
+    to: ulyanovsk
+    distance_km: 250
+    duration_h: 10.2
+    cost_per_ton_rub: 4500
+  - from: kemerovo
+    to: novokuznetsk
+    distance_km: 200
+    duration_h: 9.3
+    cost_per_ton_rub: 4200
+  - from: kemerovo
+    to: novosibirsk
+    distance_km: 260
+    duration_h: 10.3
+    cost_per_ton_rub: 4560
+  - from: khabarovsk
+    to: vladivostok
+    distance_km: 760
+    duration_h: 18.7
+    cost_per_ton_rub: 7560
+  - from: kirov
+    to: moscow
+    distance_km: 960
+    duration_h: 22.0
+    cost_per_ton_rub: 8760
+  - from: kirov
+    to: nizhny-novgorod
+    distance_km: 500
+    duration_h: 14.3
+    cost_per_ton_rub: 6000
+  - from: kirov
+    to: perm
+    distance_km: 500
+    duration_h: 14.3
+    cost_per_ton_rub: 6000
+  - from: krasnodar
+    to: novorossiysk
+    distance_km: 150
+    duration_h: 8.5
+    cost_per_ton_rub: 3900
+  - from: krasnodar
+    to: rostov-on-don
+    distance_km: 300
+    duration_h: 11.0
+    cost_per_ton_rub: 4800
+  - from: krasnodar
+    to: sochi
+    distance_km: 300
+    duration_h: 11.0
+    cost_per_ton_rub: 4800
+  - from: krasnoyarsk
+    to: tomsk
+    distance_km: 500
+    duration_h: 14.3
+    cost_per_ton_rub: 6000
+  - from: lipetsk
+    to: voronezh
+    distance_km: 130
+    duration_h: 8.2
+    cost_per_ton_rub: 3780
+  - from: london
+    to: paris
+    distance_km: 460
+    duration_h: 13.7
+    cost_per_ton_rub: 5760
+  - from: los-angeles
+    to: mexico-city
+    distance_km: 2500
+    duration_h: 47.7
+    cost_per_ton_rub: 18000
+  - from: los-angeles
+    to: new-york
+    distance_km: 4500
+    duration_h: 81.0
+    cost_per_ton_rub: 30000
+  - from: los-angeles
+    to: vancouver
+    distance_km: 2000
+    duration_h: 39.3
+    cost_per_ton_rub: 15000
+  - from: madrid
+    to: paris
+    distance_km: 1250
+    duration_h: 26.8
+    cost_per_ton_rub: 10500
+  - from: melbourne
+    to: sydney
+    distance_km: 900
+    duration_h: 21.0
+    cost_per_ton_rub: 8400
+  - from: moscow
+    to: murmansk
+    distance_km: 2000
+    duration_h: 39.3
+    cost_per_ton_rub: 15000
+  - from: moscow
+    to: nizhny-novgorod
+    distance_km: 440
+    duration_h: 13.3
+    cost_per_ton_rub: 5640
+  - from: moscow
+    to: rostov-on-don
+    distance_km: 1230
+    duration_h: 26.5
+    cost_per_ton_rub: 10380
+  - from: moscow
+    to: ryazan
+    distance_km: 200
+    duration_h: 9.3
+    cost_per_ton_rub: 4200
+  - from: moscow
+    to: saint-petersburg
+    distance_km: 650
+    duration_h: 16.8
+    cost_per_ton_rub: 6900
+  - from: moscow
+    to: samara
+    distance_km: 1050
+    duration_h: 23.5
+    cost_per_ton_rub: 9300
+  - from: moscow
+    to: tula
+    distance_km: 190
+    duration_h: 9.2
+    cost_per_ton_rub: 4140
+  - from: moscow
+    to: volgograd
+    distance_km: 1070
+    duration_h: 23.8
+    cost_per_ton_rub: 9420
+  - from: moscow
+    to: voronezh
+    distance_km: 580
+    duration_h: 15.7
+    cost_per_ton_rub: 6480
+  - from: moscow
+    to: warsaw
+    distance_km: 1260
+    duration_h: 27.0
+    cost_per_ton_rub: 10560
+  - from: moscow
+    to: yaroslavl
+    distance_km: 280
+    duration_h: 10.7
+    cost_per_ton_rub: 4680
+  - from: murmansk
+    to: saint-petersburg
+    distance_km: 1450
+    duration_h: 30.2
+    cost_per_ton_rub: 11700
+  - from: new-york
+    to: toronto
+    distance_km: 800
+    duration_h: 19.3
+    cost_per_ton_rub: 7800
+  - from: nizhny-novgorod
+    to: yaroslavl
+    distance_km: 312
+    duration_h: 11.2
+    cost_per_ton_rub: 4872
+  - from: novosibirsk
+    to: omsk
+    distance_km: 650
+    duration_h: 16.8
+    cost_per_ton_rub: 6900
+  - from: novosibirsk
+    to: tomsk
+    distance_km: 300
+    duration_h: 11.0
+    cost_per_ton_rub: 4800
+  - from: omsk
+    to: tyumen
+    distance_km: 600
+    duration_h: 16.0
+    cost_per_ton_rub: 6600
+  - from: orenburg
+    to: samara
+    distance_km: 400
+    duration_h: 12.7
+    cost_per_ton_rub: 5400
+  - from: osaka
+    to: tokyo
+    distance_km: 550
+    duration_h: 15.2
+    cost_per_ton_rub: 6300
+  - from: oslo
+    to: stockholm
+    distance_km: 570
+    duration_h: 15.5
+    cost_per_ton_rub: 6420
+  - from: paris
+    to: rome
+    distance_km: 1400
+    duration_h: 29.3
+    cost_per_ton_rub: 11400
+  - from: penza
+    to: saratov
+    distance_km: 230
+    duration_h: 9.8
+    cost_per_ton_rub: 4380
+  - from: perm
+    to: yekaterinburg
+    distance_km: 400
+    duration_h: 12.7
+    cost_per_ton_rub: 5400
+  - from: rostov-on-don
+    to: volgograd
+    distance_km: 500
+    duration_h: 14.3
+    cost_per_ton_rub: 6000
+  - from: samara
+    to: saratov
+    distance_km: 400
+    duration_h: 12.7
+    cost_per_ton_rub: 5400
+  - from: samara
+    to: tolyatti
+    distance_km: 100
+    duration_h: 7.7
+    cost_per_ton_rub: 3600
+  - from: samara
+    to: ufa
+    distance_km: 450
+    duration_h: 13.5
+    cost_per_ton_rub: 5700
+  - from: saratov
+    to: volgograd
+    distance_km: 400
+    duration_h: 12.7
+    cost_per_ton_rub: 5400
+  - from: toronto
+    to: vancouver
+    distance_km: 4400
+    duration_h: 79.3
+    cost_per_ton_rub: 29400
+  - from: tyumen
+    to: yekaterinburg
+    distance_km: 350
+    duration_h: 11.8
+    cost_per_ton_rub: 5100

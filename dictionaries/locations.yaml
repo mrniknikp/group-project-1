@@ -1,0 +1,1316 @@
+schema_version: 3
+updated: 2026-11-10
+description: >
+  Справочник локаций (городов), между которыми могут выполняться перевозки.
+  Координаты — WGS84, десятичные градусы. Инфраструктурные флаги показывают,
+  какие виды транспорта физически доступны в локации.
+  port — порт (морской или речной/озёрный, без разделения),
+  airport — аэропорт, railway — железнодорожная станция,
+  road_access — подъезд автомобильным транспортом.
+
+locations:
+  # ---------------------------------------------------------------------------
+  # Россия
+  # ---------------------------------------------------------------------------
+  - id: moscow
+    name_ru: Москва
+    name_en: Moscow
+    country_code: RU
+    country_ru: Россия
+    lat: 55.7558
+    lon: 37.6173
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Крупнейший хаб; речной порт на Москве-реке.
+
+  - id: saint-petersburg
+    name_ru: Санкт-Петербург
+    name_en: Saint Petersburg
+    country_code: RU
+    country_ru: Россия
+    lat: 59.9343
+    lon: 30.3351
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Морской порт Балтийского бассейна.
+
+  - id: novosibirsk
+    name_ru: Новосибирск
+    name_en: Novosibirsk
+    country_code: RU
+    country_ru: Россия
+    lat: 55.0084
+    lon: 82.9357
+    port: false
+    airport: true
+    railway: true
+    road_access: true
+    notes: Крупный ж/д узел Транссиба.
+
+  - id: yekaterinburg
+    name_ru: Екатеринбург
+    name_en: Yekaterinburg
+    country_code: RU
+    country_ru: Россия
+    lat: 56.8389
+    lon: 60.6057
+    port: false
+    airport: true
+    railway: true
+    road_access: true
+    notes: Промышленный и логистический центр Урала.
+
+  - id: kazan
+    name_ru: Казань
+    name_en: Kazan
+    country_code: RU
+    country_ru: Россия
+    lat: 55.7963
+    lon: 49.1088
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Речной порт на Волге.
+
+  - id: nizhny-novgorod
+    name_ru: Нижний Новгород
+    name_en: Nizhny Novgorod
+    country_code: RU
+    country_ru: Россия
+    lat: 56.3269
+    lon: 44.0059
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Речной порт, крупный автопромышленный центр.
+
+  - id: chelyabinsk
+    name_ru: Челябинск
+    name_en: Chelyabinsk
+    country_code: RU
+    country_ru: Россия
+    lat: 55.1644
+    lon: 61.4368
+    port: false
+    airport: true
+    railway: true
+    road_access: true
+    notes:
+
+  - id: omsk
+    name_ru: Омск
+    name_en: Omsk
+    country_code: RU
+    country_ru: Россия
+    lat: 54.9885
+    lon: 73.3242
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Речной порт на Иртыше.
+
+  - id: samara
+    name_ru: Самара
+    name_en: Samara
+    country_code: RU
+    country_ru: Россия
+    lat: 53.2001
+    lon: 50.1500
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Речной порт на Волге.
+
+  - id: rostov-on-don
+    name_ru: Ростов-на-Дону
+    name_en: Rostov-on-Don
+    country_code: RU
+    country_ru: Россия
+    lat: 47.2357
+    lon: 39.7015
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Выход к Азовскому и Чёрному морям через Дон.
+
+  - id: ufa
+    name_ru: Уфа
+    name_en: Ufa
+    country_code: RU
+    country_ru: Россия
+    lat: 54.7388
+    lon: 55.9721
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Речной порт на Белой.
+
+  - id: krasnoyarsk
+    name_ru: Красноярск
+    name_en: Krasnoyarsk
+    country_code: RU
+    country_ru: Россия
+    lat: 56.0153
+    lon: 92.8932
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Речной порт на Енисее.
+
+  - id: voronezh
+    name_ru: Воронеж
+    name_en: Voronezh
+    country_code: RU
+    country_ru: Россия
+    lat: 51.6608
+    lon: 39.2003
+    port: false
+    airport: true
+    railway: true
+    road_access: true
+    notes:
+
+  - id: perm
+    name_ru: Пермь
+    name_en: Perm
+    country_code: RU
+    country_ru: Россия
+    lat: 58.0105
+    lon: 56.2502
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Речной порт на Каме.
+
+  - id: volgograd
+    name_ru: Волгоград
+    name_en: Volgograd
+    country_code: RU
+    country_ru: Россия
+    lat: 48.7080
+    lon: 44.5133
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Речной порт на Волге, выход к Каспию.
+
+  - id: krasnodar
+    name_ru: Краснодар
+    name_en: Krasnodar
+    country_code: RU
+    country_ru: Россия
+    lat: 45.0355
+    lon: 38.9753
+    port: false
+    airport: true
+    railway: true
+    road_access: true
+    notes: Хаб юга России.
+
+  - id: saratov
+    name_ru: Саратов
+    name_en: Saratov
+    country_code: RU
+    country_ru: Россия
+    lat: 51.5336
+    lon: 46.0343
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Речной порт на Волге.
+
+  - id: tyumen
+    name_ru: Тюмень
+    name_en: Tyumen
+    country_code: RU
+    country_ru: Россия
+    lat: 57.1522
+    lon: 65.5272
+    port: false
+    airport: true
+    railway: true
+    road_access: true
+    notes: Ворота в нефтегазовые регионы.
+
+  - id: tolyatti
+    name_ru: Тольятти
+    name_en: Tolyatti
+    country_code: RU
+    country_ru: Россия
+    lat: 53.5078
+    lon: 49.4204
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Речной порт на Волге.
+
+  - id: izhevsk
+    name_ru: Ижевск
+    name_en: Izhevsk
+    country_code: RU
+    country_ru: Россия
+    lat: 56.8527
+    lon: 53.2115
+    port: false
+    airport: true
+    railway: true
+    road_access: true
+    notes:
+
+  - id: barnaul
+    name_ru: Барнаул
+    name_en: Barnaul
+    country_code: RU
+    country_ru: Россия
+    lat: 53.3548
+    lon: 83.7698
+    port: false
+    airport: false
+    railway: true
+    road_access: true
+    notes: Близость к авиаузлу Новосибирска (192 км).
+
+  - id: ulyanovsk
+    name_ru: Ульяновск
+    name_en: Ulyanovsk
+    country_code: RU
+    country_ru: Россия
+    lat: 54.3142
+    lon: 48.4031
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Речной порт на Волге.
+
+  - id: irkutsk
+    name_ru: Иркутск
+    name_en: Irkutsk
+    country_code: RU
+    country_ru: Россия
+    lat: 52.2870
+    lon: 104.3050
+    port: false
+    airport: true
+    railway: true
+    road_access: true
+    notes: Ближайший крупный город к Байкалу.
+
+  - id: khabarovsk
+    name_ru: Хабаровск
+    name_en: Khabarovsk
+    country_code: RU
+    country_ru: Россия
+    lat: 48.4827
+    lon: 135.0838
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Речной порт на Амуре, узел Транссиба.
+
+  - id: vladivostok
+    name_ru: Владивосток
+    name_en: Vladivostok
+    country_code: RU
+    country_ru: Россия
+    lat: 43.1155
+    lon: 131.8855
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Главный морской порт Дальнего Востока.
+
+  - id: yaroslavl
+    name_ru: Ярославль
+    name_en: Yaroslavl
+    country_code: RU
+    country_ru: Россия
+    lat: 57.6261
+    lon: 39.8845
+    port: true
+    airport: false
+    railway: true
+    road_access: true
+    notes: Речной порт на Волге. Близость к московскому авиаузлу (250 км).
+
+  - id: makhachkala
+    name_ru: Махачкала
+    name_en: Makhachkala
+    country_code: RU
+    country_ru: Россия
+    lat: 42.9764
+    lon: 47.5024
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Крупнейший порт на Каспийском море.
+
+  - id: tomsk
+    name_ru: Томск
+    name_en: Tomsk
+    country_code: RU
+    country_ru: Россия
+    lat: 56.4846
+    lon: 84.9482
+    port: true
+    airport: false
+    railway: true
+    road_access: true
+    notes: Речной порт на Томи. Близость к авиаузлу Новосибирска (207 км).
+
+  - id: orenburg
+    name_ru: Оренбург
+    name_en: Orenburg
+    country_code: RU
+    country_ru: Россия
+    lat: 51.7682
+    lon: 55.0979
+    port: false
+    airport: true
+    railway: true
+    road_access: true
+    notes: Пограничный регион с Казахстаном.
+
+  - id: kemerovo
+    name_ru: Кемерово
+    name_en: Kemerovo
+    country_code: RU
+    country_ru: Россия
+    lat: 55.3547
+    lon: 86.0873
+    port: true
+    airport: false
+    railway: true
+    road_access: true
+    notes: Речной порт на Томи. Близость к авиаузлу Новосибирска (204 км).
+
+  - id: novokuznetsk
+    name_ru: Новокузнецк
+    name_en: Novokuznetsk
+    country_code: RU
+    country_ru: Россия
+    lat: 53.7596
+    lon: 87.1216
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Металлургический центр, речной порт на Томи.
+
+  - id: ryazan
+    name_ru: Рязань
+    name_en: Ryazan
+    country_code: RU
+    country_ru: Россия
+    lat: 54.6269
+    lon: 39.6916
+    port: true
+    airport: false
+    railway: true
+    road_access: true
+    notes: Речной порт на Оке. Близость к московскому авиаузлу (182 км).
+
+  - id: astrakhan
+    name_ru: Астрахань
+    name_en: Astrakhan
+    country_code: RU
+    country_ru: Россия
+    lat: 46.3497
+    lon: 48.0408
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Порт на Каспии, устье Волги.
+
+  - id: naberezhnye-chelny
+    name_ru: Набережные Челны
+    name_en: Naberezhnye Chelny
+    country_code: RU
+    country_ru: Россия
+    lat: 55.7436
+    lon: 52.3958
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Речной порт на Каме.
+
+  - id: penza
+    name_ru: Пенза
+    name_en: Penza
+    country_code: RU
+    country_ru: Россия
+    lat: 53.1959
+    lon: 45.0000
+    port: false
+    airport: true
+    railway: true
+    road_access: true
+    notes:
+
+  - id: lipetsk
+    name_ru: Липецк
+    name_en: Lipetsk
+    country_code: RU
+    country_ru: Россия
+    lat: 52.6031
+    lon: 39.5708
+    port: false
+    airport: true
+    railway: true
+    road_access: true
+    notes:
+
+  - id: kirov
+    name_ru: Киров
+    name_en: Kirov
+    country_code: RU
+    country_ru: Россия
+    lat: 58.6035
+    lon: 49.6680
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Речной порт на Вятке.
+
+  - id: tula
+    name_ru: Тула
+    name_en: Tula
+    country_code: RU
+    country_ru: Россия
+    lat: 54.1961
+    lon: 37.6182
+    port: false
+    airport: false
+    railway: true
+    road_access: true
+    notes: Близость к московскому авиаузлу.
+
+  - id: kaliningrad
+    name_ru: Калининград
+    name_en: Kaliningrad
+    country_code: RU
+    country_ru: Россия
+    lat: 54.7104
+    lon: 20.4522
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Анклав, порт Балтийского моря.
+
+  - id: murmansk
+    name_ru: Мурманск
+    name_en: Murmansk
+    country_code: RU
+    country_ru: Россия
+    lat: 68.9585
+    lon: 33.0827
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Незамерзающий порт Северного Ледовитого океана.
+
+  - id: sochi
+    name_ru: Сочи
+    name_en: Sochi
+    country_code: RU
+    country_ru: Россия
+    lat: 43.5855
+    lon: 39.7231
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Пассажирский морской порт, курорт.
+
+  - id: arkhangelsk
+    name_ru: Архангельск
+    name_en: Arkhangelsk
+    country_code: RU
+    country_ru: Россия
+    lat: 64.5393
+    lon: 40.5182
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Порт Белого моря.
+
+  - id: yakutsk
+    name_ru: Якутск
+    name_en: Yakutsk
+    country_code: RU
+    country_ru: Россия
+    lat: 62.0355
+    lon: 129.6755
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Речной порт на Лене; ж/д станция — Нижний Бестях (через реку).
+
+  - id: petropavlovsk-kamchatsky
+    name_ru: Петропавловск-Камчатский
+    name_en: Petropavlovsk-Kamchatsky
+    country_code: RU
+    country_ru: Россия
+    lat: 53.0370
+    lon: 158.6559
+    port: true
+    airport: true
+    railway: false
+    road_access: true
+    notes: Изолированная транспортная система, ж/д отсутствует.
+
+  - id: norilsk
+    name_ru: Норильск
+    name_en: Norilsk
+    country_code: RU
+    country_ru: Россия
+    lat: 69.3535
+    lon: 88.2027
+    port: false
+    airport: true
+    railway: true
+    road_access: true
+    notes: Ж/д ветка к порту Дудинка; автомобильный доступ ограничен.
+
+  - id: novorossiysk
+    name_ru: Новороссийск
+    name_en: Novorossiysk
+    country_code: RU
+    country_ru: Россия
+    lat: 44.7239
+    lon: 37.7686
+    port: true
+    airport: false
+    railway: true
+    road_access: true
+    notes: Крупнейший порт Чёрного моря, нефтеналивной терминал.
+
+  - id: ulan-ude
+    name_ru: Улан-Удэ
+    name_en: Ulan-Ude
+    country_code: RU
+    country_ru: Россия
+    lat: 51.8335
+    lon: 107.5841
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Узел Транссиба, речной порт на Селенге.
+
+  - id: chita
+    name_ru: Чита
+    name_en: Chita
+    country_code: RU
+    country_ru: Россия
+    lat: 52.0340
+    lon: 113.4994
+    port: false
+    airport: true
+    railway: true
+    road_access: true
+    notes: Узел Транссиба, пограничный регион с Китаем.
+
+  - id: magadan
+    name_ru: Магадан
+    name_en: Magadan
+    country_code: RU
+    country_ru: Россия
+    lat: 59.5638
+    lon: 150.8035
+    port: true
+    airport: true
+    railway: false
+    road_access: true
+    notes: Морской порт Охотского моря, ж/д отсутствует.
+
+  - id: salekhard
+    name_ru: Салехард
+    name_en: Salekhard
+    country_code: RU
+    country_ru: Россия
+    lat: 66.5299
+    lon: 66.6136
+    port: true
+    airport: true
+    railway: false
+    road_access: true
+    notes: Речной порт на Оби; наземный доступ сезонный (зимник).
+
+  # ---------------------------------------------------------------------------
+  # Мир
+  # ---------------------------------------------------------------------------
+  - id: beijing
+    name_ru: Пекин
+    name_en: Beijing
+    country_code: CN
+    country_ru: Китай
+    lat: 39.9042
+    lon: 116.4074
+    port: false
+    airport: true
+    railway: true
+    road_access: true
+    notes:
+
+  - id: shanghai
+    name_ru: Шанхай
+    name_en: Shanghai
+    country_code: CN
+    country_ru: Китай
+    lat: 31.2304
+    lon: 121.4737
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Крупнейший контейнерный порт мира.
+
+  - id: guangzhou
+    name_ru: Гуанчжоу
+    name_en: Guangzhou
+    country_code: CN
+    country_ru: Китай
+    lat: 23.1291
+    lon: 113.2644
+    port: true
+    airport: false
+    railway: true
+    road_access: true
+    notes: Порт в дельте Жемчужной реки. Близость к авиаузлу Гонконга (129 км).
+
+  - id: shenzhen
+    name_ru: Шэньчжэнь
+    name_en: Shenzhen
+    country_code: CN
+    country_ru: Китай
+    lat: 22.5431
+    lon: 114.0579
+    port: true
+    airport: false
+    railway: true
+    road_access: true
+    notes: Крупный контейнерный порт. Близость к авиаузлу Гонконга (27 км).
+
+  - id: hong-kong
+    name_ru: Гонконг
+    name_en: Hong Kong
+    country_code: HK
+    country_ru: Гонконг
+    lat: 22.3193
+    lon: 114.1694
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Свободный порт, крупный авиахаб.
+
+  - id: tokyo
+    name_ru: Токио
+    name_en: Tokyo
+    country_code: JP
+    country_ru: Япония
+    lat: 35.6762
+    lon: 139.6503
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Порт Токийского залива.
+
+  - id: osaka
+    name_ru: Осака
+    name_en: Osaka
+    country_code: JP
+    country_ru: Япония
+    lat: 34.6937
+    lon: 135.5023
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Порт в заливе Осака.
+
+  - id: seoul
+    name_ru: Сеул
+    name_en: Seoul
+    country_code: KR
+    country_ru: Южная Корея
+    lat: 37.5665
+    lon: 126.9780
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Морской порт — Инчхон в агломерации.
+
+  - id: singapore
+    name_ru: Сингапур
+    name_en: Singapore
+    country_code: SG
+    country_ru: Сингапур
+    lat: 1.3521
+    lon: 103.8198
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Крупнейший транзитный хаб Юго-Восточной Азии.
+
+  - id: bangkok
+    name_ru: Бангкок
+    name_en: Bangkok
+    country_code: TH
+    country_ru: Таиланд
+    lat: 13.7563
+    lon: 100.5018
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Морской порт — Лэм Чабанг в агломерации.
+
+  - id: mumbai
+    name_ru: Мумбаи
+    name_en: Mumbai
+    country_code: IN
+    country_ru: Индия
+    lat: 19.0760
+    lon: 72.8777
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Крупнейший порт Индии.
+
+  - id: delhi
+    name_ru: Дели
+    name_en: Delhi
+    country_code: IN
+    country_ru: Индия
+    lat: 28.6139
+    lon: 77.2090
+    port: false
+    airport: true
+    railway: true
+    road_access: true
+    notes: Внутренний хаб, выход к портам через ж/д и авто.
+
+  - id: dubai
+    name_ru: Дубай
+    name_en: Dubai
+    country_code: AE
+    country_ru: ОАЭ
+    lat: 25.2048
+    lon: 55.2708
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Порт Джебель-Али, крупный реэкспортный хаб.
+
+  - id: istanbul
+    name_ru: Стамбул
+    name_en: Istanbul
+    country_code: TR
+    country_ru: Турция
+    lat: 41.0082
+    lon: 28.9784
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Пролив Босфор, связь Чёрного и Средиземного морей.
+
+  - id: tehran
+    name_ru: Тегеран
+    name_en: Tehran
+    country_code: IR
+    country_ru: Иран
+    lat: 35.6892
+    lon: 51.3890
+    port: false
+    airport: true
+    railway: true
+    road_access: true
+    notes: Внутренний хаб, выход к Каспию и Персидскому заливу.
+
+  - id: berlin
+    name_ru: Берлин
+    name_en: Berlin
+    country_code: DE
+    country_ru: Германия
+    lat: 52.5200
+    lon: 13.4050
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Речное судоходство по Шпрее/Хафелю.
+
+  - id: hamburg
+    name_ru: Гамбург
+    name_en: Hamburg
+    country_code: DE
+    country_ru: Германия
+    lat: 53.5511
+    lon: 9.9937
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Крупнейший порт Германии.
+
+  - id: frankfurt
+    name_ru: Франкфурт-на-Майне
+    name_en: Frankfurt am Main
+    country_code: DE
+    country_ru: Германия
+    lat: 50.1109
+    lon: 8.6821
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Крупный авиахаб и ж/д узел.
+
+  - id: amsterdam
+    name_ru: Амстердам
+    name_en: Amsterdam
+    country_code: NL
+    country_ru: Нидерланды
+    lat: 52.3676
+    lon: 4.9041
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Порт Северного моря, каналы.
+
+  - id: rotterdam
+    name_ru: Роттердам
+    name_en: Rotterdam
+    country_code: NL
+    country_ru: Нидерланды
+    lat: 51.9244
+    lon: 4.4777
+    port: true
+    airport: false
+    railway: true
+    road_access: true
+    notes: Крупнейший порт Европы.
+
+  - id: paris
+    name_ru: Париж
+    name_en: Paris
+    country_code: FR
+    country_ru: Франция
+    lat: 48.8566
+    lon: 2.3522
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Речной порт на Сене.
+
+  - id: london
+    name_ru: Лондон
+    name_en: London
+    country_code: GB
+    country_ru: Великобритания
+    lat: 51.5074
+    lon: -0.1278
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Морской порт — Тильбери/Лондонский порт в эстуарии Темзы.
+
+  - id: madrid
+    name_ru: Мадрид
+    name_en: Madrid
+    country_code: ES
+    country_ru: Испания
+    lat: 40.4168
+    lon: -3.7038
+    port: false
+    airport: true
+    railway: true
+    road_access: true
+    notes: Внутренний хаб Пиренейского полуострова.
+
+  - id: rome
+    name_ru: Рим
+    name_en: Rome
+    country_code: IT
+    country_ru: Италия
+    lat: 41.9028
+    lon: 12.4964
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Морской порт — Чивитавеккья в агломерации.
+
+  - id: warsaw
+    name_ru: Варшава
+    name_en: Warsaw
+    country_code: PL
+    country_ru: Польша
+    lat: 52.2297
+    lon: 21.0122
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Речной порт на Висле.
+
+  - id: helsinki
+    name_ru: Хельсинки
+    name_en: Helsinki
+    country_code: FI
+    country_ru: Финляндия
+    lat: 60.1699
+    lon: 24.9384
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Паромное сообщение с Таллином и Стокгольмом.
+
+  - id: stockholm
+    name_ru: Стокгольм
+    name_en: Stockholm
+    country_code: SE
+    country_ru: Швеция
+    lat: 59.3293
+    lon: 18.0686
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Порты Балтийского моря.
+
+  - id: oslo
+    name_ru: Осло
+    name_en: Oslo
+    country_code: "NO"
+    country_ru: Норвегия
+    lat: 59.9139
+    lon: 10.7522
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Порт в Осло-фьорде.
+
+  - id: new-york
+    name_ru: Нью-Йорк
+    name_en: New York
+    country_code: US
+    country_ru: США
+    lat: 40.7128
+    lon: -74.0060
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Порт Нью-Йорка и Нью-Джерси.
+
+  - id: los-angeles
+    name_ru: Лос-Анджелес
+    name_en: Los Angeles
+    country_code: US
+    country_ru: США
+    lat: 34.0522
+    lon: -118.2437
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Порты Лос-Анджелес/Лонг-Бич.
+
+  - id: chicago
+    name_ru: Чикаго
+    name_en: Chicago
+    country_code: US
+    country_ru: США
+    lat: 41.8781
+    lon: -87.6298
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Крупнейший ж/д узел США, выход к Великим озёрам.
+
+  - id: houston
+    name_ru: Хьюстон
+    name_en: Houston
+    country_code: US
+    country_ru: США
+    lat: 29.7604
+    lon: -95.3698
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Нефтехимический и портовый центр.
+
+  - id: toronto
+    name_ru: Торонто
+    name_en: Toronto
+    country_code: CA
+    country_ru: Канада
+    lat: 43.6532
+    lon: -79.3832
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Порт на озере Онтарио.
+
+  - id: vancouver
+    name_ru: Ванкувер
+    name_en: Vancouver
+    country_code: CA
+    country_ru: Канада
+    lat: 49.2827
+    lon: -123.1207
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Крупнейший порт Канады на Тихом океане.
+
+  - id: mexico-city
+    name_ru: Мехико
+    name_en: Mexico City
+    country_code: MX
+    country_ru: Мексика
+    lat: 19.4326
+    lon: -99.1332
+    port: false
+    airport: true
+    railway: true
+    road_access: true
+    notes: Внутренний хаб, выход к портам Веракрус/Мансанильо.
+
+  - id: sao-paulo
+    name_ru: Сан-Паулу
+    name_en: Sao Paulo
+    country_code: BR
+    country_ru: Бразилия
+    lat: -23.5505
+    lon: -46.6333
+    port: false
+    airport: true
+    railway: true
+    road_access: true
+    notes: Морской порт — Сантус в агломерации.
+
+  - id: buenos-aires
+    name_ru: Буэнос-Айрес
+    name_en: Buenos Aires
+    country_code: AR
+    country_ru: Аргентина
+    lat: -34.6037
+    lon: -58.3816
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Порт в эстуарии Ла-Плата.
+
+  - id: cairo
+    name_ru: Каир
+    name_en: Cairo
+    country_code: EG
+    country_ru: Египет
+    lat: 30.0444
+    lon: 31.2357
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Речной порт на Ниле; морские порты — Александрия/Порт-Саид.
+
+  - id: johannesburg
+    name_ru: Йоханнесбург
+    name_en: Johannesburg
+    country_code: ZA
+    country_ru: ЮАР
+    lat: -26.2041
+    lon: 28.0473
+    port: false
+    airport: true
+    railway: true
+    road_access: true
+    notes: Внутренний хаб, выход к Дурбану и Кейптауну.
+
+  - id: nairobi
+    name_ru: Найроби
+    name_en: Nairobi
+    country_code: KE
+    country_ru: Кения
+    lat: -1.2921
+    lon: 36.8219
+    port: false
+    airport: true
+    railway: true
+    road_access: true
+    notes: Морской порт — Момбаса, связан ж/д.
+
+  - id: sydney
+    name_ru: Сидней
+    name_en: Sydney
+    country_code: AU
+    country_ru: Австралия
+    lat: -33.8688
+    lon: 151.2093
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Порт Порт-Джексон.
+
+  - id: melbourne
+    name_ru: Мельбурн
+    name_en: Melbourne
+    country_code: AU
+    country_ru: Австралия
+    lat: -37.8136
+    lon: 144.9631
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Порт Филиппа.
+
+  - id: auckland
+    name_ru: Окленд
+    name_en: Auckland
+    country_code: NZ
+    country_ru: Новая Зеландия
+    lat: -36.8485
+    lon: 174.7633
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Крупнейший порт Новой Зеландии.
+
+  - id: ho-chi-minh-city
+    name_ru: Хошимин
+    name_en: Ho Chi Minh City
+    country_code: VN
+    country_ru: Вьетнам
+    lat: 10.8231
+    lon: 106.6297
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Порт на реке Сайгон.
+
+  - id: jakarta
+    name_ru: Джакарта
+    name_en: Jakarta
+    country_code: ID
+    country_ru: Индонезия
+    lat: -6.2088
+    lon: 106.8456
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Порт Танджунг-Приок.
+
+  - id: manila
+    name_ru: Манила
+    name_en: Manila
+    country_code: PH
+    country_ru: Филиппины
+    lat: 14.5995
+    lon: 120.9842
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Крупный порт и авиахаб.
+
+  - id: busan
+    name_ru: Пусан
+    name_en: Busan
+    country_code: KR
+    country_ru: Южная Корея
+    lat: 35.1796
+    lon: 129.0756
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Крупнейший контейнерный порт Кореи.
+
+  - id: tianjin
+    name_ru: Тяньцзинь
+    name_en: Tianjin
+    country_code: CN
+    country_ru: Китай
+    lat: 39.3434
+    lon: 117.3616
+    port: true
+    airport: false
+    railway: true
+    road_access: true
+    notes: Порт Синган, ворота Пекина. Близость к авиаузлу Пекина (103 км).
+
+  - id: dalian
+    name_ru: Далянь
+    name_en: Dalian
+    country_code: CN
+    country_ru: Китай
+    lat: 38.9140
+    lon: 121.6147
+    port: true
+    airport: true
+    railway: true
+    road_access: true
+    notes: Крупный порт на Жёлтом море.
+
+  - id: almaty
+    name_ru: Алматы
+    name_en: Almaty
+    country_code: KZ
+    country_ru: Казахстан
+    lat: 43.2220
+    lon: 76.8512
+    port: false
+    airport: true
+    railway: true
+    road_access: true
+    notes: Крупный хаб Центральной Азии, сухопутные маршруты в Китай.

@@ -1,0 +1,25 @@
+schema_version: 2
+updated: '2026-11-17'
+description: '4 начисления: 1 order_delivery и 3 subcontract_delivery. Только баллы.'
+reference_date: '2026-11-17'
+points:
+- id: pts_9001
+  kind: order_delivery
+  order_id: ord_6003
+  amount_points: 100
+  created_at: '2026-11-17T03:40:00Z'
+- id: pts_9002
+  kind: subcontract_delivery
+  subcontract_id: sub_9001
+  amount_points: 40
+  created_at: '2026-11-17T09:00:00Z'
+- id: pts_9003
+  kind: subcontract_delivery
+  subcontract_id: sub_9002
+  amount_points: 30
+  created_at: '2026-11-17T09:30:00Z'
+- id: pts_9004
+  kind: subcontract_delivery
+  subcontract_id: sub_9003
+  amount_points: 20
+  created_at: '2026-11-17T10:00:00Z'

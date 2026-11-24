@@ -1,0 +1,58 @@
+schema_version: 2
+updated: '2026-11-17'
+description: >
+  6 ответов в формате Error (code, message, details) — по одному на
+  400/401/404/409/422/503. http_status, id и description — метаданные мока.
+  ID синтетические.
+reference_date: '2026-11-17'
+errors:
+- http_status: 400
+  id: err_bad_request
+  description: Тело запроса не разбирается как JSON.
+  response:
+    code: bad_request
+    message: Тело запроса не является корректным JSON.
+    details:
+      position: 42
+- http_status: 401
+  id: err_unauthorized
+  description: Запрос без ключа команды или с неизвестным ключом.
+  response:
+    code: unauthorized
+    message: Ключ API отсутствует или неверен.
+    details:
+      header: X-Api-Key
+- http_status: 404
+  id: err_not_found
+  description: Запрошен несуществующий или чужой заказ.
+  response:
+    code: not_found
+    message: Объект не найден.
+    details:
+      resource: order
+      id: ord_9999
+- http_status: 409
+  id: err_quote_exists
+  description: Повторная котировка до решения по заявке.
+  response:
+    code: conflict
+    message: Активная котировка по заявке уже существует.
+    details:
+      reason: quote_exists
+- http_status: 422
+  id: err_validation
+  description: Некорректные поля заявки или котировки.
+  response:
+    code: validation_error
+    message: Тело запроса или параметры не прошли проверку.
+    details:
+      field: price_rub
+      reason: must_be_positive
+- http_status: 503
+  id: err_unavailable
+  description: Сервис временно недоступен.
+  response:
+    code: service_unavailable
+    message: Сервис временно недоступен, повторите позже.
+    details:
+      retry_after_s: 30

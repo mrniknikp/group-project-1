@@ -1,0 +1,97 @@
+schema_version: 2
+updated: '2026-11-17'
+description: '5 RFQ портала — по одной на RequestStatus. Заявка — входящий документ, не заказ.'
+reference_date: '2026-11-17'
+requests:
+- request_id: req_5001
+  origin: moscow
+  destination: vladivostok
+  allowed_modes:
+  - rail
+  - road
+  weight_t: 18.5
+  cargo:
+    description: Сборный груз, контейнер 40 футов.
+    cargo_type: general
+  response_deadline: '2026-11-19T18:00:00Z'
+  points_reward: 100
+  route_hints:
+  - route_id: rail:moscow-vladivostok
+    leg_ids:
+    - rail:moscow-vladivostok
+  comment: Погрузка на терминале заказчика.
+  received_at: '2026-11-17T06:41:00Z'
+  status: open
+- request_id: req_5002
+  origin: saint-petersburg
+  destination: novosibirsk
+  allowed_modes:
+  - rail
+  weight_t: 12.0
+  cargo:
+    description: Промышленное оборудование в ящиках.
+    cargo_type: general
+  response_deadline: '2026-11-18T12:00:00Z'
+  points_reward: 80
+  route_hints:
+  - route_id: rail:saint-petersburg-novosibirsk
+    leg_ids:
+    - rail:saint-petersburg-novosibirsk
+  comment: Промышленное оборудование в ящиках.
+  received_at: '2026-11-16T10:00:00Z'
+  status: quoted
+- request_id: req_5003
+  origin: kazan
+  destination: yekaterinburg
+  allowed_modes:
+  - road
+  weight_t: 6.4
+  cargo:
+    description: Сборный груз до Екатеринбурга.
+    cargo_type: general
+  response_deadline: '2026-11-17T20:00:00Z'
+  points_reward: 60
+  route_hints:
+  - route_id: road:kazan-yekaterinburg
+    leg_ids:
+    - road:kazan-yekaterinburg
+  comment: Сборный груз до Екатеринбурга.
+  received_at: '2026-11-15T07:00:00Z'
+  status: closed
+- request_id: req_5004
+  origin: novosibirsk
+  destination: tomsk
+  allowed_modes:
+  - road
+  - rail
+  weight_t: 4.2
+  cargo:
+    description: Бытовые товары, 12 паллет.
+    cargo_type: general
+  response_deadline: '2026-09-03T18:00:00Z'
+  points_reward: 50
+  route_hints:
+  - route_id: road:novosibirsk-tomsk
+    leg_ids:
+    - road:novosibirsk-tomsk
+  comment: Бытовые товары, 12 паллет.
+  received_at: '2026-09-01T08:00:00Z'
+  status: expired
+- request_id: req_5005
+  origin: moscow
+  destination: magadan
+  allowed_modes:
+  - air
+  weight_t: 2.8
+  cargo:
+    description: Срочный груз, авиа.
+    cargo_type: fragile
+  response_deadline: '2026-11-16T18:00:00Z'
+  points_reward: 40
+  route_hints:
+  - route_id: air:moscow-magadan
+    leg_ids:
+    - air:moscow-magadan
+  comment: Срочный груз, авиа.
+  received_at: '2026-11-14T08:00:00Z'
+  status: cancelled

@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "team-service-api"
+version = "2.3.0"
+description = "OpenAPI-контракт сервиса команды, reference stub и conformance-проверки"
+readme = "api/README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "PyYAML>=6.0",
+    "fastapi>=0.110",
+    "uvicorn>=0.27",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.5",
+    "httpx>=0.27",
+    "jsonschema>=4.20",
+]
+
+[project.scripts]
+validate-api = "scripts.checks:main"
+validate-dictionaries = "scripts.check_dictionaries:main"
+api-viewer = "api.viewer:main"
+check-service = "contract.check_service:main"
+
+[tool.setuptools]
+packages = ["api", "scripts", "stub", "contract"]
+
+[tool.setuptools.package-data]
+api = ["openapi.yaml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+# CI ставит ruff из `.[dev]`; версия может отличаться от локальной, поэтому
+# набор правил задан явно — `ruff check .` не должен «позеленеть» или
+# «покраснеть» из-за смены дефолтов линтера.
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]

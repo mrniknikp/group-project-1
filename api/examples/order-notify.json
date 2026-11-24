@@ -1,0 +1,10 @@
+{
+  "order_id": "ord_6003",
+  "status": "delivered",
+  "delivered_at": "2026-11-17T03:40:00Z",
+  "route_id": "road:kazan-yekaterinburg",
+  "leg_ids": [
+    "road:kazan-yekaterinburg"
+  ],
+  "points_awarded": 100
+}

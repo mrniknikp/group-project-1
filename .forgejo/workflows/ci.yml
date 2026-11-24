@@ -1,0 +1,110 @@
+# CI контракта сервиса команды: lint, тесты, reference stub и conformance.
+#
+# Раннер: fastapi → registry.generativeui.ru/env-fastapi:latest
+# (Python 3.11, ruff, pytest, fastapi, uvicorn, httpx уже в образе).
+# actions/checkout на этом раннере недоступен (нет data.forgejo.org), поэтому
+# clone ручной; FORGEJO_TOKEN подставляет сам Forgejo Actions, в URL он не
+# хардкодится. Клонируем коммит события (SHA), а не default branch.
+#
+# Зачем conformance в CI: контракт api/openapi.yaml должен быть исполняемым.
+# Job поднимает stub, ждёт /healthz и прогоняет check-service против него —
+# это защищает от «контракт есть, а сервис ему не соответствует».
+name: ci
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "api/**"
+      - "contract/**"
+      - "stub/**"
+      - "scripts/**"
+      - "tests/**"
+      - "pyproject.toml"
+      - ".forgejo/workflows/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - "api/**"
+      - "contract/**"
+      - "stub/**"
+      - "scripts/**"
+      - "tests/**"
+      - "pyproject.toml"
+      - ".forgejo/workflows/**"
+  workflow_dispatch:
+
+concurrency:
+  # Новый пуш в ту же ветку/PR отменяет предыдущий прогон: не держим
+  # раннер (capacity=1) старыми ревизиями.
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: fastapi
+    timeout-minutes: 15
+    steps:
+      - name: Checkout (по SHA события)
+        run: |
+          set -euo pipefail
+          [ -n "${FORGEJO_TOKEN:-}" ] || {
+            echo "::error::FORGEJO_TOKEN пуст, clone невозможен"; exit 1; }
+          git clone --quiet \
+            "https://git:${FORGEJO_TOKEN}@git.codenotes.ru/${GITHUB_REPOSITORY}.git" .
+          git fetch --quiet --depth 1 origin "${GITHUB_SHA}" \
+            || git fetch --quiet --depth 1 origin "${GITHUB_REF}"
+          git checkout --quiet --detach FETCH_HEAD
+          echo "ref=${GITHUB_REF} event_sha=${GITHUB_SHA} checked_out=$(git rev-parse HEAD)"
+
+      - name: Versions
+        run: |
+          python3 --version
+          python3 -c 'import sys; assert sys.version_info[:2] == (3, 11), sys.version'
+          pip3 --version
+
+      - name: Install deps (including dev)
+        run: pip install --no-cache-dir --break-system-packages -e ".[dev]"
+
+      - name: Lint (ruff check)
+        run: ruff check .
+
+      - name: Tests (pytest)
+        run: python3 -m pytest -q
+
+      - name: Start reference stub
+        run: |
+          set -euo pipefail
+          python3 -m uvicorn stub.app:app --host 127.0.0.1 --port 8080 \
+            > /tmp/stub.log 2>&1 &
+          echo $! > /tmp/stub.pid
+          ready=0
+          # Ждём /healthz через stdlib: curl в образе может отсутствовать.
+          for _ in $(seq 1 100); do
+            if python3 -c "import sys, urllib.request; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8080/healthz', timeout=1).status == 200 else 1)" 2>/dev/null; then
+              ready=1
+              break
+            fi
+            sleep 0.25
+          done
+          if [ "$ready" -ne 1 ]; then
+            echo "::error::stub не поднялся за 25 s"
+            cat /tmp/stub.log
+            exit 1
+          fi
+          echo "stub готов"
+
+      - name: Conformance (check-service)
+        run: |
+          python3 -m contract.check_service \
+            --url http://127.0.0.1:8080 \
+            --api-key test-key \
+            --order-id ord_6003
+
+      - name: Stop stub and show log
+        if: always()
+        run: |
+          if [ -f /tmp/stub.pid ]; then
+            kill "$(cat /tmp/stub.pid)" 2>/dev/null || true
+          fi
+          cat /tmp/stub.log || true

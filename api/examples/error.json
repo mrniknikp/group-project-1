@@ -1,0 +1,8 @@
+{
+  "code": "not_found",
+  "message": "Объект не найден.",
+  "details": {
+    "resource": "order",
+    "id": "ord_9999"
+  }
+}
